@@ -1,6 +1,3 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-
 const rulesForJavaScript = {
   test: /\.(ts|js)x?$/,
   exclude: /node_modules/,
@@ -47,26 +44,22 @@ const rulesForFonts = {
 };
 
 module.exports = {
-  output: {
-    filename: "bundle.js",
-    path: path.resolve(__dirname, "build"),
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "./src/index.html"),
-    }),
-  ],
-  resolve: {
-    extensions: [".tsx", ".ts", ".js"],
-  },
-  module: {
-    rules: [
+  webpack: (config, { isServer }) => {
+    config.module.rules.push(
       rulesForJavaScript,
       rulesForStyles,
       rulesForAssets,
       rulesForFonts,
-      rulesForSass,
-    ],
+      rulesForSass
+    );
+
+    if (!isServer) {
+      config.resolve.fallback = {
+        fs: false,
+        module: false,
+      };
+    }
+
+    return config;
   },
-  stats: "errors-only",
 };

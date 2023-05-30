@@ -1,34 +1,36 @@
 {
-    "compilerOptions": {
-      "target": "ES5" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019', 'ES2020', or 'ESNEXT'. */,
-      "module": "ESNext" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', 'es2020', or 'ESNext'. */,
-      "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */ /* Type declaration files to be included in compilation. */,      
-      "lib": [
-        "DOM",
-        "ESNext"
-      ] /* Specify library files to be included in the compilation. */,
-      "jsx": "react-jsx" /* Specify JSX code generation: 'preserve', 'react-native', 'react' or 'react-jsx'. */,
-      "noEmit": true /* Do not emit outputs. */,
-      "isolatedModules": true /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */,
-      "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
-      "strict": true /* Enable all strict type-checking options. */,
-      "skipLibCheck": true /* Skip type checking of declaration files. */,
-      "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
-      "allowJs": true,
-      "resolveJsonModule": true,
-      "plugins": [
-        {
-          "name": "typescript-plugin-css-modules",
-          "options": {
-            "classnameTransform": "dashes",
-            "customMatcher": "\\.m\\.css$",
-            "customRenderer": "./myRenderer.js",
-            "dotenvOptions": {},
-            "postcssOptions": {},
-            "rendererOptions": {}
-          }
-        }
-      ]
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@/components/*": ["/components/*"],
+      "@/containers/*": ["/containers/*"],
+      "@/api/*": ["/api/*"]
     },
-    "include": ["src/**/*"]
-  }
+    "target": "ESNext", // Specifies the ECMAScript version to which the TypeScript code should be compiled.
+    "module": "ESNext", // Specifies the module format to be used for the generated code.
+    "moduleResolution": "node", // Defines the module resolution strategy. In this case, it is configured as "node", which uses Node.js module resolution.
+    "lib": [
+      "DOM",
+      "ESNext"
+    ], // Specifies the TypeScript definition libraries to be included in the compilation.
+    "jsx": "preserve", // Indicates how JSX syntax should be handled in TypeScript files. When configured as "preserve", JSX is kept without transpilation.
+    "noEmit": true, // Prevents output file generation during compilation. This is useful when using Next.js, as the code is automatically compiled by Next.js at runtime.
+    "isolatedModules": true, // Enables transpilation of each file as an independent module. This improves compilation speed.
+    "esModuleInterop": true, // Enables interoperability between CommonJS modules and ES modules.
+    "strict": true, // Enables all strict type-checking options in TypeScript.
+    "skipLibCheck": true, // Skips type-checking of declaration files in library files (e.g., files in the node_modules folder).
+    "forceConsistentCasingInFileNames": true, // Enforces consistent casing in file references, ensuring the same capitalization is used for a particular file.
+    "resolveJsonModule": true // Allows importing JSON files as modules, making it easier to work with JSON data in TypeScript code.
+    ,
+    "allowJs": true,
+    "incremental": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

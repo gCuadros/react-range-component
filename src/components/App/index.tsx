@@ -1,8 +1,8 @@
 import styles from "./app.module.scss";
 
-const App = () => {
+const Home = () => {
   return (
-    <div className={styles.p}>
+    <div className={styles.test}>
       <p>
         <span>Hello</span>
       </p>
@@ -10,4 +10,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Home;
