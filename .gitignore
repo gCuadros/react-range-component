@@ -9,3 +9,5 @@ node_modules
 
 # Ignore SASS configuration files
 .sass-cache
+
+.next
