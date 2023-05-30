@@ -44,7 +44,7 @@ const rulesForFonts = {
 };
 
 module.exports = {
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     config.module.rules.push(
       rulesForJavaScript,
       rulesForStyles,
@@ -52,6 +52,13 @@ module.exports = {
       rulesForFonts,
       rulesForSass
     );
+
+    if (!isServer) {
+      config.resolve.fallback = {
+        fs: false,
+        module: false,
+      };
+    }
 
     return config;
   },

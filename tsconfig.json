@@ -1,9 +1,18 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@/components/*": ["/components/*"],
+      "@/containers/*": ["/containers/*"],
+      "@/api/*": ["/api/*"]
+    },
     "target": "ESNext", // Specifies the ECMAScript version to which the TypeScript code should be compiled.
     "module": "ESNext", // Specifies the module format to be used for the generated code.
     "moduleResolution": "node", // Defines the module resolution strategy. In this case, it is configured as "node", which uses Node.js module resolution.
-    "lib": ["DOM", "ESNext"], // Specifies the TypeScript definition libraries to be included in the compilation.
+    "lib": [
+      "DOM",
+      "ESNext"
+    ], // Specifies the TypeScript definition libraries to be included in the compilation.
     "jsx": "preserve", // Indicates how JSX syntax should be handled in TypeScript files. When configured as "preserve", JSX is kept without transpilation.
     "noEmit": true, // Prevents output file generation during compilation. This is useful when using Next.js, as the code is automatically compiled by Next.js at runtime.
     "isolatedModules": true, // Enables transpilation of each file as an independent module. This improves compilation speed.
@@ -12,7 +21,16 @@
     "skipLibCheck": true, // Skips type-checking of declaration files in library files (e.g., files in the node_modules folder).
     "forceConsistentCasingInFileNames": true, // Enforces consistent casing in file references, ensuring the same capitalization is used for a particular file.
     "resolveJsonModule": true // Allows importing JSON files as modules, making it easier to work with JSON data in TypeScript code.
+    ,
+    "allowJs": true,
+    "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

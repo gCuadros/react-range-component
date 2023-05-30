@@ -2,7 +2,7 @@ import styles from "./app.module.scss";
 
 const Home = () => {
   return (
-    <div className={styles.p}>
+    <div className={styles.test}>
       <p>
         <span>Hello</span>
       </p>
