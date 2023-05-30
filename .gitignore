@@ -1,2 +1,11 @@
+# Ingore system files on Mac" se traduce al español como "Ignorar archivos del sistema en Mac
+.DS_store
+
+# Ignora la carpeta node_modules
 node_modules
-build
+
+# Ignore API key-related files
+.env
+
+# Ignore SASS configuration files
+.sass-cache
