@@ -29,17 +29,24 @@
     background-color: black;
     border: 2px solid black;
     border-radius: 50%;
-    width: 8px;
-    height: 8px;
-    cursor: pointer;
+    width: 6px;
+    height: 6px;
+    cursor: grab;
+    
+
+    &.dragging {
+      cursor:grabbing;      
+      width: 10px;
+      height: 10px;
+    }
   }
   
   .min-bullet {
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);   
   }
   
   .max-bullet {
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);   
   }
   
   .min-value {

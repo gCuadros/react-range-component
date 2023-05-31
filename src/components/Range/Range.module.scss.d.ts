@@ -2,6 +2,7 @@
 // Please do not change this file!
 interface CssExports {
   'bullet': string;
+  'dragging': string;
   'max-bullet': string;
   'max-value': string;
   'min-bullet': string;

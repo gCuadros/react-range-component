@@ -114,12 +114,16 @@ const Range: React.FC = () => {
             style={{ left: `${minValue}%`, width: `${maxValue - minValue}%` }}
           />
           <div
-            className={`${styles["bullet"]} ${styles["min-bullet"]}`}
+            className={`${styles["bullet"]} ${
+              dragging === "min" ? styles["dragging"] : ""
+            } ${styles["min-bullet"]}`}
             style={{ left: `${minValue}%`, transform: "translate(-50%, -50%)" }}
             onMouseDown={event => handleBulletMouseDown(event, "min")}
           />
           <div
-            className={`${styles["bullet"]} ${styles["max-bullet"]}`}
+            className={`${styles["bullet"]} ${
+              dragging === "max" ? styles["dragging"] : ""
+            } ${styles["max-bullet"]} `}
             style={{ left: `${maxValue}%`, transform: "translate(-50%, -50%)" }}
             onMouseDown={event => handleBulletMouseDown(event, "max")}
           />
