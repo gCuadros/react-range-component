@@ -1,0 +1,54 @@
+// Range.module.scss
+
+.range-box{
+  max-width: 300px;
+}
+
+.range-container {
+    display: flex;
+    align-items: center;
+    padding: 20px;    
+  }
+  
+  .range-track {
+    flex: 1;
+    background-color: #cbd5e0;
+    height: 2px;
+    position: relative;    
+  }
+  
+  .range-highlight {
+    position: absolute;
+    background-color: black;
+    height: 100%;
+  }
+  
+  .bullet {
+    position: absolute;
+    top: 1px;
+    background-color: black;
+    border: 2px solid black;
+    border-radius: 50%;
+    width: 8px;
+    height: 8px;
+    cursor: pointer;
+  }
+  
+  .min-bullet {
+    transform: translate(-50%, -50%);
+  }
+  
+  .max-bullet {
+    transform: translate(-50%, -50%);
+  }
+  
+  .min-value {
+   font-size: 16px;
+    margin-right: 12px;
+  }
+  
+  .max-value {    
+    font-size: 16px;
+    margin-left: 12px;
+  }
+  
