@@ -4,12 +4,12 @@ import RangeDynamic from "./RangeDynamic";
 import RangeFixed from "./RangeFixed";
 
 interface Props {
-  values: number[];
+  values?: number[];
 }
 
 const Range = ({ values }: Props) => {
   const allowedValues = useMemo(
-    () => Array.from(new Set(values)).sort((a, b) => a - b),
+    () => (values ? Array.from(new Set(values)).sort((a, b) => a - b) : []),
     [values]
   );
   const isDynamic = allowedValues.length === 2;
