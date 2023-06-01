@@ -49,7 +49,7 @@ npm run test
 
 ### Deployment
 
-Currently, the develop branch is deployed through Vercel at the following [URL](https://react-range-component-bycw3bztx-devgonzalo.vercel.app/)
+Currently, the develop branch is deployed through Vercel at the following [URL](https://react-range-component.vercel.app/)
 
 ## Useful Links
 
