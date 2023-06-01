@@ -2,6 +2,7 @@
 
 .range-box {
   max-width: 400px;
+  margin: 0 auto;
 
   .range-container {
     display: flex;
@@ -75,6 +76,7 @@
 
     .min-value {
       font-size: 16px;
+      margin: 0;
       margin-right: 12px;
       font-family: "circular";
       span {
@@ -84,6 +86,7 @@
 
     .max-value {
       font-size: 16px;
+      margin: 0;
       margin-left: 12px;
       font-family: "circular";
       span {
