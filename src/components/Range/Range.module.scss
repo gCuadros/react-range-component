@@ -1,0 +1,97 @@
+// Range.module.scss
+
+.range-box {
+  max-width: 400px;
+  margin: 0 auto;
+
+  .range-container {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+
+    .input-wrapper {
+      font-size: 16px;
+      font-family: "circular";
+
+      &--left {
+        margin-right: 12px;
+      }
+
+      &--right {
+        margin-left: 12px;
+      }
+    }
+
+    .range-handler {
+      font-size: 16px;
+      font-family: "circular";
+      border: none;
+      outline: none;
+      border-bottom: 1px solid #9f9f9f;
+      max-width: 30px;
+    }
+
+    .range-track {
+      flex: 1;
+      background-color: #cbd5e0;
+      height: 2px;
+      position: relative;
+    }
+
+    .range-highlight {
+      position: absolute;
+      background-color: black;
+      height: 100%;
+    }
+
+    .bullet {
+      position: absolute;
+      top: 1px;
+      background-color: black;
+      border: 2px solid black;
+      border-radius: 50%;
+      width: 6px;
+      height: 6px;
+      cursor: grab;
+
+      &.dragging {
+        cursor: grabbing;
+        width: 10px;
+        height: 10px;
+      }
+
+      &:hover {
+        width: 10px;
+        height: 10px;
+      }
+    }
+
+    .min-bullet {
+      transform: translate(-50%, -50%);
+    }
+
+    .max-bullet {
+      transform: translate(-50%, -50%);
+    }
+
+    .min-value {
+      font-size: 16px;
+      margin: 0;
+      margin-right: 12px;
+      font-family: "circular";
+      span {
+        margin-left: 5px;
+      }
+    }
+
+    .max-value {
+      font-size: 16px;
+      margin: 0;
+      margin-left: 12px;
+      font-family: "circular";
+      span {
+        margin-left: 5px;
+      }
+    }
+  }
+}
