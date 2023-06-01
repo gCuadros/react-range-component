@@ -1,5 +1,3 @@
-import { useMemo } from "react";
-
 import { useMinMaxRange } from "api/hooks/minMaxRange/useMinMaxRange";
 import Layout from "components/Layout";
 import Range from "components/Range";
@@ -7,11 +5,8 @@ import Range from "components/Range";
 import styles from "./Exercise1.module.scss";
 
 const Exercise1 = () => {
-  const { data: minMaxRange } = useMinMaxRange();
-  const values = useMemo(
-    () => (minMaxRange ? Object.values(minMaxRange) : []),
-    [minMaxRange]
-  );
+  const { data: minMaxRange, isLoading } = useMinMaxRange();
+  const values = minMaxRange ? Object.values(minMaxRange) : [];
 
   return (
     <Layout>
@@ -39,7 +34,7 @@ const Exercise1 = () => {
         <li>Dragging a bullet turns cursor to dragging</li>
         <li>Min value and max value can`t be crossed in range</li>
       </ul>
-      <Range values={values} />
+      <Range allowedValues={values} isLoading={isLoading} />
     </Layout>
   );
 };

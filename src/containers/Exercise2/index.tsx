@@ -1,5 +1,3 @@
-import { useMemo } from "react";
-
 import { useRangeValues } from "api/hooks/rangeValues/useRangeValues";
 import Layout from "components/Layout";
 import Range from "components/Range";
@@ -7,8 +5,7 @@ import Range from "components/Range";
 import styles from "./Exercise2.module.scss";
 
 const Exercise2 = () => {
-  const { data: rangeValues } = useRangeValues();
-  const values = useMemo(() => (rangeValues ? rangeValues : []), [rangeValues]);
+  const { data: rangeValues, isLoading } = useRangeValues();
 
   return (
     <Layout>
@@ -31,7 +28,7 @@ const Exercise2 = () => {
         <li>The user can drag two bullets through the range line.</li>
         <li>Min value and max value can`t be crossed in range</li>
       </ul>
-      <Range values={values} />
+      <Range allowedValues={rangeValues} isLoading={isLoading} />
     </Layout>
   );
 };
