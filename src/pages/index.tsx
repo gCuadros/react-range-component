@@ -1,5 +1,10 @@
-import Home from "containers/Home";
+import Link from "next/link";
 
-const Page = () => <Home />;
+const Page = () => (
+  <div className="div">
+    <Link href="/exercise1">exercise 1</Link>
+    <Link href="/exercise2">exercise 2</Link>
+  </div>
+);
 
 export default Page;
