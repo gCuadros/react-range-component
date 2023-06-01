@@ -5,7 +5,6 @@ import React, {
   MouseEvent,
   useCallback,
   ChangeEvent,
-  TouchEvent,
 } from "react";
 
 import styles from "./Range.module.scss";
@@ -58,10 +57,7 @@ const RangeDynamic = ({ values }: Props) => {
   };
 
   const handleBulletMouseDown = useCallback(
-    (
-      event: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>,
-      type: MouseEventAction
-    ) => {
+    (event: MouseEvent<HTMLDivElement>, type: MouseEventAction) => {
       event.preventDefault();
       setDragging(type);
     },
@@ -120,15 +116,9 @@ const RangeDynamic = ({ values }: Props) => {
     document.addEventListener("mousemove", handleMouseDrag);
     document.addEventListener("mouseup", handleMouseUp);
 
-    document.addEventListener("touchmove", handleMouseDrag);
-    document.addEventListener("touchend", handleMouseUp);
-
     return () => {
       document.removeEventListener("mousemove", handleMouseDrag);
       document.removeEventListener("mouseup", handleMouseUp);
-
-      document.removeEventListener("touchmove", handleMouseDrag);
-      document.removeEventListener("touchend", handleMouseUp);
     };
   }, [dragging]);
 
@@ -163,7 +153,6 @@ const RangeDynamic = ({ values }: Props) => {
             } ${styles["min-bullet"]}`}
             style={{ left: `${minValue}%`, transform: "translate(-50%, -50%)" }}
             onMouseDown={event => handleBulletMouseDown(event, "min")}
-            onTouchStart={event => handleBulletMouseDown(event, "min")}
           />
           <div
             className={`${styles["bullet"]} ${
@@ -171,7 +160,6 @@ const RangeDynamic = ({ values }: Props) => {
             } ${styles["max-bullet"]} `}
             style={{ left: `${maxValue}%`, transform: "translate(-50%, -50%)" }}
             onMouseDown={event => handleBulletMouseDown(event, "max")}
-            onTouchStart={event => handleBulletMouseDown(event, "max")}
           />
         </div>
         <span
