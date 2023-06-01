@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 
+import Navbar from "components/Navbar";
+
 import styles from "./Layout.module.scss";
 
 interface Props {
@@ -7,7 +9,12 @@ interface Props {
 }
 
 const Layout = ({ children }: Props) => {
-  return <div className={styles["main-container"]}>{children}</div>;
+  return (
+    <>
+      <Navbar />
+      <div className={styles["main-container"]}>{children}</div>
+    </>
+  );
 };
 
 export default Layout;

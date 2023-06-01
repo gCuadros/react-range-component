@@ -1,0 +1,27 @@
+.title {
+  font-family: "circular";
+}
+
+.text {
+  font-size: 16px;
+  font-family: "circular";
+}
+
+.link-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+
+  a {
+    font-family: "circular";
+    text-decoration: none;
+    color: black;
+    transition: all 0.3s ease;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useMemo } from "react";
 
 import { useMinMaxRange } from "api/hooks/minMaxRange/useMinMaxRange";
@@ -16,7 +15,6 @@ const Exercise1 = () => {
 
   return (
     <Layout>
-      <Link href="/">Home</Link>
       <h1 className={styles["title"]}>Normal Range:</h1>
       <p className={styles["text"]}>
         Provide a localhost:8080/exercise1 route with the following:

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useMemo } from "react";
 
 import { useRangeValues } from "api/hooks/rangeValues/useRangeValues";
@@ -13,7 +12,6 @@ const Exercise2 = () => {
 
   return (
     <Layout>
-      <Link href="/">Home</Link>
       <h1 className={styles["title"]}>Fixed values range:</h1>
       <p className={styles["text"]}>
         Provide a localhost:8080/exercise2 route with the following:
