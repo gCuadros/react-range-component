@@ -8,6 +8,8 @@ import {
   useEffect,
 } from "react";
 
+import SkeletonLine from "components/SkeletonLine";
+
 import styles from "./Range.module.scss";
 
 type MouseEventAction = "min" | "max";
@@ -177,7 +179,12 @@ const Range = ({ allowedValues, isLoading }: Props) => {
     };
   }, [dragging]);
 
-  if (isLoading) return null;
+  if (isLoading || !values)
+    return (
+      <div className={styles["range-box"]}>
+        <SkeletonLine />
+      </div>
+    );
 
   return (
     <div className={styles["range-box"]} data-testid="range-dynamic">
