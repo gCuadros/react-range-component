@@ -5,7 +5,8 @@
   "main": "index.ts",
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "next dev -p 8080",
+    "start": "next start -p 8080",
     "test": "jest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
