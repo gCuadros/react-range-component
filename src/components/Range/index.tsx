@@ -179,6 +179,118 @@ const Range = ({ allowedValues, isLoading }: Props) => {
 
   if (isLoading) return null;
 
+  return (
+    <div className={styles["range-box"]} data-testid="range-dynamic">
+      <div className={styles["range-container"]}>
+        {isDynamic && (
+          <span
+            className={`${styles["input-wrapper"]} ${styles["input-wrapper--left"]} `}
+          >
+            <input
+              id="minValue"
+              data-testid="minValue"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              value={minValue}
+              min={minValue}
+              max={maxValue}
+              onChange={handleMinChange}
+              className={styles["range-handler"]}
+            />
+            €
+          </span>
+        )}
+        {isFixed && (
+          <p className={styles["min-value"]}>
+            {values[minValue]}
+            <span>€</span>
+          </p>
+        )}
+
+        <div className={`${styles["range-track"]}`} ref={rangeRef}>
+          <div
+            className={styles["range-highlight"]}
+            style={
+              isDynamic
+                ? { left: `${minValue}%`, width: `${maxValue - minValue}%` }
+                : {
+                    left: `${(minValue / (values.length - 1)) * 100}%`,
+                    width: `${
+                      ((maxValue - minValue) / (values.length - 1)) * 100
+                    }%`,
+                  }
+            }
+          />
+          <div
+            data-testid="min-bullet"
+            className={`${styles["bullet"]} ${styles["min-bullet"]} ${
+              dragging === "min" ? styles["dragging"] : ""
+            }`}
+            style={
+              isDynamic
+                ? {
+                    left: `${minValue}%`,
+                    transform: "translate(-50%, -50%)",
+                  }
+                : {
+                    left: `${(minValue / (values.length - 1)) * 100}%`,
+                    transform: "translate(-50%, -50%)",
+                  }
+            }
+            onMouseDown={event => handleBulletMouseDown(event, "min")}
+          />
+          <div
+            data-testid="max-bullet"
+            className={`${styles["bullet"]} ${styles["max-bullet"]} ${
+              dragging === "max" ? styles["dragging"] : ""
+            }`}
+            style={
+              isDynamic
+                ? {
+                    left: `${maxValue}%`,
+                    transform: "translate(-50%, -50%)",
+                  }
+                : {
+                    left: `${(maxValue / (values.length - 1)) * 100}%`,
+                    transform: "translate(-50%, -50%)",
+                  }
+            }
+            onMouseDown={event => handleBulletMouseDown(event, "max")}
+          />
+        </div>
+
+        {isDynamic && (
+          <span
+            className={`${styles["input-wrapper"]} ${styles["input-wrapper--right"]} `}
+          >
+            <input
+              id="maxValue"
+              data-testid="maxValue"
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              value={maxValue}
+              min={minValue}
+              max={maxValue}
+              onChange={handleMaxChange}
+              className={styles["range-handler"]}
+            />
+            €
+          </span>
+        )}
+        {isFixed && (
+          <p className={styles["max-value"]}>
+            {values[maxValue]}
+            <span>€</span>
+          </p>
+        )}
+      </div>
+    </div>
+  );
+
+  // "I leave this option commented as an alternative, where although some parts of the code are repeated,
+  // it improves readability in my opinion. I chose the proposed option as I believe it better aligns with the requirements of the task."
   if (isDynamic) {
     return (
       <div className={styles["range-box"]} data-testid="range-dynamic">
