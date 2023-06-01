@@ -3,12 +3,16 @@
 interface CssExports {
   'bullet': string;
   'dragging': string;
+  'input-wrapper': string;
+  'input-wrapper--left': string;
+  'input-wrapper--right': string;
   'max-bullet': string;
   'max-value': string;
   'min-bullet': string;
   'min-value': string;
   'range-box': string;
   'range-container': string;
+  'range-handler': string;
   'range-highlight': string;
   'range-track': string;
 }
