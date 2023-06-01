@@ -18,7 +18,7 @@ const Exercise2 = () => {
       </p>
       <ul className={styles["text"]}>
         <li>
-          The component CAN'T be a HTML5 input range. It has to be a custom one.
+          The component CAN`T be a HTML5 input range. It has to be a custom one.
         </li>
         <li>
           Given a range of values: [1.99, 5.99, 10.99, 30.99, 50.99, 70.99] the
@@ -29,7 +29,7 @@ const Exercise2 = () => {
           have to be only a label
         </li>
         <li>The user can drag two bullets through the range line.</li>
-        <li>Min value and max value can't be crossed in range</li>
+        <li>Min value and max value can`t be crossed in range</li>
       </ul>
       <Range values={values} />
     </Layout>

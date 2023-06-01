@@ -21,7 +21,7 @@ const Exercise1 = () => {
       </p>
       <ul className={styles["text"]}>
         <li>
-          The component CAN'T be a HTML5 input range. It has to be a custom one.
+          The component CAN`T be a HTML5 input range. It has to be a custom one.
         </li>
         <li>The user can drag two bullets through the range line.</li>
         <li>
@@ -34,10 +34,10 @@ const Exercise1 = () => {
         </li>
         <li>
           When some bullet is on hover, this bullet has to be bigger and change
-          cursor's type into draggable.
+          cursor`s type into draggable.
         </li>
         <li>Dragging a bullet turns cursor to dragging</li>
-        <li>Min value and max value can't be crossed in range</li>
+        <li>Min value and max value can`t be crossed in range</li>
       </ul>
       <Range values={values} />
     </Layout>
