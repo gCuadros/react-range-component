@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useMemo } from "react";
 
 import { useRangeValues } from "api/hooks/rangeValues/useRangeValues";
@@ -13,14 +12,13 @@ const Exercise2 = () => {
 
   return (
     <Layout>
-      <Link href="/">Home</Link>
       <h1 className={styles["title"]}>Fixed values range:</h1>
       <p className={styles["text"]}>
         Provide a localhost:8080/exercise2 route with the following:
       </p>
       <ul className={styles["text"]}>
         <li>
-          The component CAN'T be a HTML5 input range. It has to be a custom one.
+          The component CAN`T be a HTML5 input range. It has to be a custom one.
         </li>
         <li>
           Given a range of values: [1.99, 5.99, 10.99, 30.99, 50.99, 70.99] the
@@ -31,7 +29,7 @@ const Exercise2 = () => {
           have to be only a label
         </li>
         <li>The user can drag two bullets through the range line.</li>
-        <li>Min value and max value can't be crossed in range</li>
+        <li>Min value and max value can`t be crossed in range</li>
       </ul>
       <Range values={values} />
     </Layout>

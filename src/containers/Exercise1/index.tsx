@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useMemo } from "react";
 
 import { useMinMaxRange } from "api/hooks/minMaxRange/useMinMaxRange";
@@ -16,14 +15,13 @@ const Exercise1 = () => {
 
   return (
     <Layout>
-      <Link href="/">Home</Link>
       <h1 className={styles["title"]}>Normal Range:</h1>
       <p className={styles["text"]}>
         Provide a localhost:8080/exercise1 route with the following:
       </p>
       <ul className={styles["text"]}>
         <li>
-          The component CAN'T be a HTML5 input range. It has to be a custom one.
+          The component CAN`T be a HTML5 input range. It has to be a custom one.
         </li>
         <li>The user can drag two bullets through the range line.</li>
         <li>
@@ -36,10 +34,10 @@ const Exercise1 = () => {
         </li>
         <li>
           When some bullet is on hover, this bullet has to be bigger and change
-          cursor's type into draggable.
+          cursor`s type into draggable.
         </li>
         <li>Dragging a bullet turns cursor to dragging</li>
-        <li>Min value and max value can't be crossed in range</li>
+        <li>Min value and max value can`t be crossed in range</li>
       </ul>
       <Range values={values} />
     </Layout>

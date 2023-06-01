@@ -1,0 +1,26 @@
+.navbar-container {
+  width: 100%;
+  border-bottom: 1px solid rgb(204, 204, 204);
+  display: flex;
+  align-items: center;
+
+  .navbar-wrapper {
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+
+    a {
+      font-family: "circular";
+      text-decoration: none;
+      color: black;
+      transition: all 0.3s ease;
+
+      &:hover {
+        opacity: 0.6;
+      }
+    }
+  }
+}
