@@ -1,4 +1,4 @@
-import React, {
+import {
   useState,
   useRef,
   MouseEvent,
@@ -188,6 +188,7 @@ const Range = ({ allowedValues, isLoading }: Props) => {
           >
             <input
               id="minValue"
+              data-testid="minValue"
               type="text"
               inputMode="numeric"
               pattern="[0-9]*"
@@ -213,6 +214,7 @@ const Range = ({ allowedValues, isLoading }: Props) => {
                 left: `${minValue}%`,
                 transform: "translate(-50%, -50%)",
               }}
+              data-testid="min-bullet"
               onMouseDown={event => handleBulletMouseDown(event, "min")}
             />
             <div
@@ -223,6 +225,7 @@ const Range = ({ allowedValues, isLoading }: Props) => {
                 left: `${maxValue}%`,
                 transform: "translate(-50%, -50%)",
               }}
+              data-testid="max-bullet"
               onMouseDown={event => handleBulletMouseDown(event, "max")}
             />
           </div>
@@ -231,6 +234,7 @@ const Range = ({ allowedValues, isLoading }: Props) => {
           >
             <input
               id="maxValue"
+              data-testid="maxValue"
               type="text"
               inputMode="numeric"
               pattern="[0-9]*"
@@ -273,6 +277,7 @@ const Range = ({ allowedValues, isLoading }: Props) => {
                 left: `${(minValue / (values.length - 1)) * 100}%`,
                 transform: "translate(-50%, -50%)",
               }}
+              data-testid="min-bullet"
               onMouseDown={event => handleBulletMouseDown(event, "min")}
             />
             <div
@@ -283,6 +288,7 @@ const Range = ({ allowedValues, isLoading }: Props) => {
                 left: `${(maxValue / (values.length - 1)) * 100}%`,
                 transform: "translate(-50%, -50%)",
               }}
+              data-testid="max-bullet"
               onMouseDown={event => handleBulletMouseDown(event, "max")}
             />
           </div>
