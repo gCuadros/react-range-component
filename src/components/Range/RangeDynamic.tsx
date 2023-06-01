@@ -123,7 +123,7 @@ const RangeDynamic = ({ values }: Props) => {
   }, [dragging]);
 
   return (
-    <div className={styles["range-box"]}>
+    <div className={styles["range-box"]} data-testid="range-dynamic">
       <div className={styles["range-container"]}>
         <span
           className={`${styles["input-wrapper"]} ${styles["input-wrapper--left"]} `}
