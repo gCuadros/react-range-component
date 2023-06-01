@@ -1,5 +1,5 @@
-import Range from "components/Range";
+import Exercise2 from "containers/Exercise2";
 
-const Page = () => <Range values={[1.99, 5.99, 10.99, 30.99, 50.99, 70.99]} />;
+const Page = () => <Exercise2 />;
 
 export default Page;
