@@ -59,13 +59,13 @@ const Range = ({ allowedValues, isLoading }: Props) => {
   }, [values, rangeRef]);
 
   const handleMinChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(event.target.value || "0");
+    const value = parseInt(event.target.value || values[0].toString());
     setMinValue(Math.min(value, maxValue));
   };
 
   const handleMaxChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value =
-      parseInt(event.target.value) > maxValue
+      parseInt(event.target.value) > values[1]
         ? maxValue
         : parseInt(event.target.value) || minValue;
     setMaxValue(Math.max(value, minValue));
