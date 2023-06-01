@@ -108,7 +108,7 @@ const RangeFixed = ({ values }: Props) => {
   }, [dragging]);
 
   return (
-    <div className={styles["range-box"]}>
+    <div className={styles["range-box"]} data-testid="range-fixed">
       <div className={styles["range-container"]}>
         <p className={styles["min-value"]}>
           {values[minIndex]}
