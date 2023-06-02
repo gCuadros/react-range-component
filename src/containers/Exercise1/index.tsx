@@ -34,7 +34,7 @@ const Exercise1 = () => {
         <li>Dragging a bullet turns cursor to dragging</li>
         <li>Min value and max value can`t be crossed in range</li>
       </ul>
-      <Range allowedValues={values} isLoading={isLoading} />
+      <Range values={values} isLoading={isLoading} />
     </Layout>
   );
 };
