@@ -7,6 +7,8 @@ import React, {
   ChangeEvent,
 } from "react";
 
+import { isNumericString } from "utils/isNumericString";
+
 import styles from "./Range.module.scss";
 
 type MouseEventAction = "min" | "max";
@@ -44,11 +46,16 @@ const RangeDynamic = ({ values }: Props) => {
   }, []);
 
   const handleMinChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(event.target.value || "0");
+    if (!isNumericString(event.target.value)) return;
+
+    const value = parseInt(event.target.value);
+    console.log(Math.min(value, maxValue));
     setMinValue(Math.min(value, maxValue));
   };
 
   const handleMaxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!isNumericString(event.target.value)) return;
+
     const value =
       parseInt(event.target.value) > defaultMaxValue
         ? defaultMaxValue
