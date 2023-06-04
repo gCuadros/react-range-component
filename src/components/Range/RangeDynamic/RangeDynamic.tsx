@@ -7,9 +7,8 @@ import React, {
   ChangeEvent,
 } from "react";
 
+import styles from "components/Range/Range.module.scss";
 import { isNumericString } from "utils/isNumericString";
-
-import styles from "./Range.module.scss";
 
 type MouseEventAction = "min" | "max";
 
@@ -48,8 +47,11 @@ const RangeDynamic = ({ values }: Props) => {
   const handleMinChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!isNumericString(event.target.value)) return;
 
-    const value = parseInt(event.target.value);
-    console.log(Math.min(value, maxValue));
+    const value =
+      parseInt(event.target.value) < defaultMinValue
+        ? defaultMinValue
+        : parseInt(event.target.value);
+
     setMinValue(Math.min(value, maxValue));
   };
 
@@ -59,7 +61,7 @@ const RangeDynamic = ({ values }: Props) => {
     const value =
       parseInt(event.target.value) > defaultMaxValue
         ? defaultMaxValue
-        : parseInt(event.target.value) || defaultMinValue;
+        : parseInt(event.target.value);
     setMaxValue(Math.max(value, minValue));
   };
 
@@ -138,6 +140,7 @@ const RangeDynamic = ({ values }: Props) => {
           <input
             id="minValue"
             type="text"
+            data-testid="min-value"
             inputMode="numeric"
             pattern="[0-9]*"
             value={minValue}
@@ -155,6 +158,7 @@ const RangeDynamic = ({ values }: Props) => {
             style={{ left: `${minValue}%`, width: `${maxValue - minValue}%` }}
           />
           <div
+            data-testid="min-bullet"
             className={`${styles["bullet"]} ${
               dragging === "min" ? styles["dragging"] : ""
             } ${styles["min-bullet"]}`}
@@ -162,6 +166,7 @@ const RangeDynamic = ({ values }: Props) => {
             onMouseDown={event => handleBulletMouseDown(event, "min")}
           />
           <div
+            data-testid="max-bullet"
             className={`${styles["bullet"]} ${
               dragging === "max" ? styles["dragging"] : ""
             } ${styles["max-bullet"]} `}
@@ -175,6 +180,7 @@ const RangeDynamic = ({ values }: Props) => {
           <input
             id="maxValue"
             type="text"
+            data-testid="max-value"
             inputMode="numeric"
             pattern="[0-9]*"
             value={maxValue}

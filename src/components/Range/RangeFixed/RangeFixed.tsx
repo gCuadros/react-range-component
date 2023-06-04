@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from "react";
 
-import styles from "./Range.module.scss";
+import styles from "components/Range/Range.module.scss";
 
 type MouseEventAction = "min" | "max";
 
@@ -123,6 +123,7 @@ const RangeFixed = ({ values }: Props) => {
             }}
           />
           <div
+            data-testid="min-bullet"
             className={`${styles["bullet"]} ${
               dragging === "min" ? styles["dragging"] : ""
             } ${styles["min-bullet"]}`}
@@ -133,6 +134,7 @@ const RangeFixed = ({ values }: Props) => {
             onMouseDown={event => handleBulletMouseDown(event, "min")}
           />
           <div
+            data-testid="max-bullet"
             className={`${styles["bullet"]} ${
               dragging === "max" ? styles["dragging"] : ""
             } ${styles["max-bullet"]} `}

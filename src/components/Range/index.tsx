@@ -1,10 +1,10 @@
 import { useMemo } from "react";
 
+import styles from "components/Range/Range.module.scss";
 import SkeletonLine from "components/SkeletonLine";
 
-import styles from "./Range.module.scss";
-import RangeDynamic from "./RangeDynamic";
-import RangeFixed from "./RangeFixed";
+import RangeDynamic from "./RangeDynamic/RangeDynamic";
+import RangeFixed from "./RangeFixed/RangeFixed";
 
 interface Props {
   values?: number[];
