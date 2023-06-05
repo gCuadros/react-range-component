@@ -4,7 +4,7 @@ import React, {
   MutableRefObject,
   Dispatch,
   SetStateAction,
-  useState,
+  useEffect,
 } from "react";
 
 import styles from "components/Range/Range.module.scss";
@@ -15,6 +15,7 @@ import {
 import useSliderDrag from "utils/rangeInput/useDraggableBullet";
 
 import { MouseEventAction } from "..";
+import { useRangeContext } from "../Context/useRangeContext";
 
 interface Props {
   values: number[];
@@ -31,10 +32,14 @@ const RangeDynamic = ({
   rangeWidthRef,
   rangeLeftRef,
 }: Props) => {
-  const [minValue, setMinValue] = useState<number>(values[0]);
-  const [maxValue, setMaxValue] = useState<number>(values[1]);
+  const { minValue, setMinValue, maxValue, setMaxValue } = useRangeContext();
   const rangeWidth = rangeWidthRef.current;
   const rangeLeft = rangeLeftRef.current;
+
+  useEffect(() => {
+    setMinValue(values[0]);
+    setMaxValue(values[1]);
+  }, [values]);
 
   const handleBulletDrag = useCallback(
     (event: MouseEvent) => {

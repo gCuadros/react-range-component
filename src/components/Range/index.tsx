@@ -1,9 +1,10 @@
-import { useState, useRef, useMemo, useEffect, ChangeEvent } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 
 import styles from "components/Range/Range.module.scss";
 import SkeletonLine from "components/SkeletonLine";
-import { isNumericString } from "utils/isNumericString";
 
+import { RangeProvider } from "./Context/RangeContext";
+import InputRangeValue from "./InputRangeValue/InputRangeValue";
 import RangeDynamic from "./RangeDynamic";
 import RangeFixed from "./RangeFixed";
 
@@ -25,16 +26,13 @@ const Range = ({ allowedValues, isLoading }: Props) => {
 
   const isDynamic = useMemo(() => values.length === 2, [values]);
   const isFixed = useMemo(() => values.length > 2, [values]);
-
   const defaultMinValue = isDynamic ? values[0] : 0;
   const defaultMaxValue = isDynamic ? values[1] : values.length - 1;
 
   const rangeRef = useRef<HTMLDivElement>(null);
-  const [minValue, setMinValue] = useState<number>(defaultMinValue);
-  const [maxValue, setMaxValue] = useState<number>(defaultMaxValue);
-  const [dragging, setDragging] = useState<MouseEventAction | null>(null);
   const rangeWidthRef = useRef<number>(0);
   const rangeLeftRef = useRef<number>(0);
+  const [dragging, setDragging] = useState<MouseEventAction | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -46,8 +44,6 @@ const Range = ({ allowedValues, isLoading }: Props) => {
     };
 
     window.addEventListener("resize", handleResize);
-    setMinValue(defaultMinValue);
-    setMaxValue(defaultMaxValue);
 
     handleResize();
 
@@ -55,28 +51,6 @@ const Range = ({ allowedValues, isLoading }: Props) => {
       window.removeEventListener("resize", handleResize);
     };
   }, [values, rangeRef]);
-
-  const handleMinChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (!isNumericString(event.target.value) || isFixed) return;
-
-    const value =
-      parseInt(event.target.value) < defaultMinValue
-        ? defaultMinValue
-        : parseInt(event.target.value);
-
-    setMinValue(Math.min(value, maxValue));
-  };
-
-  const handleMaxChange = (event: ChangeEvent<HTMLInputElement>) => {
-    if (!isNumericString(event.target.value) || isFixed) return;
-
-    const value =
-      parseInt(event.target.value) > defaultMaxValue
-        ? defaultMaxValue
-        : parseInt(event.target.value);
-
-    setMaxValue(Math.max(value, minValue));
-  };
 
   if (isLoading || !values)
     return (
@@ -86,73 +60,51 @@ const Range = ({ allowedValues, isLoading }: Props) => {
     );
 
   return (
-    <div className={styles["range-box"]}>
-      <div className={styles["range-container"]}>
-        <span
-          className={`${styles["input-wrapper"]} ${styles["input-wrapper--left"]} `}
-        >
-          <input
-            id="minValue"
-            type="number"
-            data-testid="min-value"
-            readOnly={isFixed ? true : false}
-            value={isDynamic ? minValue : values[minValue]}
-            min={defaultMinValue}
-            max={defaultMaxValue}
-            onChange={handleMinChange}
-            className={`${styles["range-handler"]} ${
-              isFixed ? styles["range-handler--fixed"] : ""
-            }`}
+    <RangeProvider>
+      <div className={styles["range-box"]}>
+        <div className={styles["range-container"]}>
+          <InputRangeValue
+            type="min"
+            values={values}
+            isFixed={isFixed}
+            isDynamic={isDynamic}
+            defaultMinValue={defaultMinValue}
+            defaultMaxValue={defaultMaxValue}
           />
-          €
-        </span>
 
-        <div className={`${styles["range-track"]}`} ref={rangeRef}>
-          {isDynamic && (
-            <RangeDynamic
-              values={values}
-              dragging={dragging}
-              setDragging={setDragging}
-              rangeWidthRef={rangeWidthRef}
-              rangeLeftRef={rangeLeftRef}
-            />
-          )}
+          <div className={`${styles["range-track"]}`} ref={rangeRef}>
+            {isDynamic && (
+              <RangeDynamic
+                values={values}
+                dragging={dragging}
+                setDragging={setDragging}
+                rangeWidthRef={rangeWidthRef}
+                rangeLeftRef={rangeLeftRef}
+              />
+            )}
 
-          {isFixed && (
-            <RangeFixed
-              values={values}
-              dragging={dragging}
-              setDragging={setDragging}
-              rangeWidthRef={rangeWidthRef}
-              rangeLeftRef={rangeLeftRef}
-            />
-          )}
+            {isFixed && (
+              <RangeFixed
+                values={values}
+                dragging={dragging}
+                setDragging={setDragging}
+                rangeWidthRef={rangeWidthRef}
+                rangeLeftRef={rangeLeftRef}
+              />
+            )}
+          </div>
+
+          <InputRangeValue
+            type="max"
+            values={values}
+            isFixed={isFixed}
+            isDynamic={isDynamic}
+            defaultMinValue={defaultMinValue}
+            defaultMaxValue={defaultMaxValue}
+          />
         </div>
-
-        <span
-          className={`${styles["input-wrapper"]} ${styles["input-wrapper--right"]} `}
-        >
-          <input
-            id="maxValue"
-            type="number"
-            data-testid="max-value"
-            readOnly={isFixed ? true : false}
-            value={
-              isDynamic
-                ? maxValue
-                : values[maxValue] || values[values.length - 1]
-            }
-            min={defaultMinValue}
-            max={defaultMaxValue}
-            onChange={handleMaxChange}
-            className={`${styles["range-handler"]} ${
-              isFixed ? styles["range-handler--fixed"] : ""
-            }`}
-          />
-          €
-        </span>
       </div>
-    </div>
+    </RangeProvider>
   );
 };
 
