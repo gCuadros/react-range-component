@@ -1,13 +1,12 @@
 import { render, fireEvent, screen } from "@testing-library/react";
-import React from "react";
 
-import RangeFixed from "./RangeFixed";
+import Range from "components/Range";
 
 describe("RangeFixed", () => {
   const values = [1.99, 5.99, 10.99, 30.99, 50.99, 70.99];
 
   test("El usuario puede arrastrar dos puntos a lo largo de la línea del rango", () => {
-    render(<RangeFixed values={values} />);
+    render(<Range allowedValues={values} />);
 
     const minBullet = screen.getByTestId("min-bullet");
     const maxBullet = screen.getByTestId("max-bullet");
@@ -31,7 +30,7 @@ describe("RangeFixed", () => {
   });
 
   test("El valor mínimo y el valor máximo no pueden cruzarse en el rango", () => {
-    const { getByTestId } = render(<RangeFixed values={values} />);
+    const { getByTestId } = render(<Range allowedValues={values} />);
     const minBullet = getByTestId("min-bullet");
     const maxBullet = getByTestId("max-bullet");
 

@@ -1,12 +1,13 @@
 import { render, fireEvent, screen } from "@testing-library/react";
-import React from "react";
 
 import "@testing-library/jest-dom/extend-expect";
-import RangeDynamic from "./RangeDynamic";
+import Range from "components/Range";
+
+const values = [1, 100];
 
 describe("RangeDynamic", () => {
   it("permite arrastrar los puntos a lo largo de la línea del rango", () => {
-    render(<RangeDynamic values={[10, 100]} />);
+    render(<Range allowedValues={values} />);
 
     const minBullet = screen.getByTestId("min-bullet");
     const maxBullet = screen.getByTestId("max-bullet");
@@ -17,7 +18,7 @@ describe("RangeDynamic", () => {
     expect(maxBullet).toBeInTheDocument();
 
     fireEvent(minBullet, new MouseEvent("mousedown"));
-    fireEvent(document, new MouseEvent("mousemove", { clientX: -100 }));
+    fireEvent(document, new MouseEvent("mousemove", { clientX: 100 }));
     fireEvent(document, new MouseEvent("mouseup"));
 
     fireEvent(maxBullet, new MouseEvent("mousedown"));
@@ -29,7 +30,7 @@ describe("RangeDynamic", () => {
   });
 
   it("permite establecer un nuevo valor al hacer clic en las etiquetas de los números de moneda", () => {
-    render(<RangeDynamic values={[1, 100]} />);
+    render(<Range allowedValues={values} />);
     const minValueInput: HTMLInputElement = screen.getByTestId("min-value");
     const maxValueInput: HTMLInputElement = screen.getByTestId("max-value");
 
@@ -44,7 +45,7 @@ describe("RangeDynamic", () => {
   });
 
   it("garantiza que el valor nunca sea menor que el valor mínimo o mayor que el valor máximo", () => {
-    render(<RangeDynamic values={[1, 100]} />);
+    render(<Range allowedValues={values} />);
     const minValueInput: HTMLInputElement = screen.getByTestId("min-value");
     const maxValueInput: HTMLInputElement = screen.getByTestId("max-value");
 
@@ -59,7 +60,7 @@ describe("RangeDynamic", () => {
   });
 
   it("no permite que el valor mínimo y el valor máximo se crucen en el rango", () => {
-    render(<RangeDynamic values={[1, 100]} />);
+    render(<Range allowedValues={values} />);
     const minValueInput: HTMLInputElement = screen.getByTestId("min-value");
     const maxValueInput: HTMLInputElement = screen.getByTestId("max-value");
 

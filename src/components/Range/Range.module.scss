@@ -25,10 +25,16 @@
     .range-handler {
       font-size: 16px;
       font-family: "circular";
+      text-align: center;
       border: none;
       outline: none;
       border-bottom: 1px solid #9f9f9f;
-      max-width: 30px;
+      max-width: 40px;
+
+      &--fixed {
+        border-bottom: none;
+        cursor: default;
+      }
     }
 
     .range-track {

@@ -1,23 +1,102 @@
-import { useMemo } from "react";
+import {
+  useState,
+  useRef,
+  useMemo,
+  useEffect,
+  useCallback,
+  MouseEvent,
+  ChangeEvent,
+} from "react";
 
 import styles from "components/Range/Range.module.scss";
 import SkeletonLine from "components/SkeletonLine";
+import { isNumericString } from "utils/isNumericString";
 
-import RangeDynamic from "./RangeDynamic/RangeDynamic";
-import RangeFixed from "./RangeFixed/RangeFixed";
+import RangeDynamic from "./RangeDynamic";
+import RangeFixed from "./RangeFixed";
 
 interface Props {
-  values?: number[];
+  allowedValues?: number[];
   isLoading?: boolean;
 }
 
-const Range = ({ values, isLoading }: Props) => {
-  const allowedValues = useMemo(
-    () => (values ? Array.from(new Set(values)).sort((a, b) => a - b) : []),
-    [values]
+type MouseEventAction = "min" | "max";
+
+const Range = ({ allowedValues, isLoading }: Props) => {
+  const values = useMemo(
+    () =>
+      allowedValues
+        ? Array.from(new Set(allowedValues)).sort((a, b) => a - b)
+        : [],
+    [allowedValues]
   );
-  const isDynamic = allowedValues.length === 2;
-  const isFixed = allowedValues.length > 2;
+
+  const isDynamic = useMemo(() => values.length === 2, [values]);
+  const isFixed = useMemo(() => values.length > 2, [values]);
+
+  const defaultMinValue = isDynamic ? values[0] : 0;
+  const defaultMaxValue = isDynamic ? values[1] : values.length - 1;
+
+  const rangeRef = useRef<HTMLDivElement>(null);
+  const [minValue, setMinValue] = useState<number>(0);
+  const [maxValue, setMaxValue] = useState<number>(0);
+  const [dragging, setDragging] = useState<MouseEventAction | null>(null);
+  const rangeWidthRef = useRef<number>(0);
+  const rangeLeftRef = useRef<number>(0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (rangeRef.current) {
+        const rangeSizes = rangeRef.current.getBoundingClientRect();
+        rangeWidthRef.current = rangeSizes.width;
+        rangeLeftRef.current = rangeSizes.left;
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    setMinValue(defaultMinValue);
+    setMaxValue(defaultMaxValue);
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [values, rangeRef]);
+
+  const handleMinChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!isNumericString(event.target.value) || isFixed) return;
+
+    const value =
+      parseInt(event.target.value) < defaultMinValue
+        ? defaultMinValue
+        : parseInt(event.target.value);
+
+    setMinValue(Math.min(value, maxValue));
+  };
+
+  const handleMaxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!isNumericString(event.target.value) || isFixed) return;
+
+    const value =
+      parseInt(event.target.value) > defaultMaxValue
+        ? defaultMaxValue
+        : parseInt(event.target.value);
+
+    setMaxValue(Math.max(value, minValue));
+  };
+
+  const handleBulletMouseDown = useCallback(
+    (event: MouseEvent<HTMLDivElement>, type: MouseEventAction) => {
+      event.preventDefault();
+      setDragging(type);
+    },
+    []
+  );
+
+  const handleBulletDragEnd = useCallback(() => {
+    setDragging(null);
+  }, []);
 
   if (isLoading || !values)
     return (
@@ -26,15 +105,84 @@ const Range = ({ values, isLoading }: Props) => {
       </div>
     );
 
-  if (isDynamic) {
-    return <RangeDynamic values={allowedValues} />;
-  }
+  return (
+    <div className={styles["range-box"]}>
+      <div className={styles["range-container"]}>
+        <span
+          className={`${styles["input-wrapper"]} ${styles["input-wrapper--left"]} `}
+        >
+          <input
+            id="minValue"
+            type="text"
+            data-testid="min-value"
+            readOnly={isFixed ? true : false}
+            inputMode="numeric"
+            pattern="[0-9]*"
+            value={isDynamic ? minValue : values[minValue]}
+            min={defaultMinValue}
+            max={defaultMaxValue}
+            onChange={handleMinChange}
+            className={`${styles["range-handler"]} ${
+              isFixed ? styles["range-handler--fixed"] : ""
+            }`}
+          />
+          €
+        </span>
 
-  if (isFixed) {
-    return <RangeFixed values={allowedValues} />;
-  }
+        <div className={`${styles["range-track"]}`} ref={rangeRef}>
+          {isDynamic && (
+            <RangeDynamic
+              minValue={minValue}
+              setMinValue={setMinValue}
+              maxValue={maxValue}
+              setMaxValue={setMaxValue}
+              dragging={dragging}
+              rangeWidthRef={rangeWidthRef}
+              rangeLeftRef={rangeLeftRef}
+              handleBulletMouseDown={handleBulletMouseDown}
+              handleBulletDragEnd={handleBulletDragEnd}
+            />
+          )}
 
-  return null;
+          {isFixed && (
+            <RangeFixed
+              values={values}
+              minValue={minValue}
+              setMinValue={setMinValue}
+              maxValue={maxValue}
+              setMaxValue={setMaxValue}
+              dragging={dragging}
+              rangeWidthRef={rangeWidthRef}
+              rangeLeftRef={rangeLeftRef}
+              handleBulletMouseDown={handleBulletMouseDown}
+              handleBulletDragEnd={handleBulletDragEnd}
+            />
+          )}
+        </div>
+
+        <span
+          className={`${styles["input-wrapper"]} ${styles["input-wrapper--right"]} `}
+        >
+          <input
+            id="maxValue"
+            type="text"
+            data-testid="max-value"
+            readOnly={isFixed ? true : false}
+            inputMode="numeric"
+            pattern="[0-9]*"
+            value={isDynamic ? maxValue : values[maxValue]}
+            min={defaultMinValue}
+            max={defaultMaxValue}
+            onChange={handleMaxChange}
+            className={`${styles["range-handler"]} ${
+              isFixed ? styles["range-handler--fixed"] : ""
+            }`}
+          />
+          €
+        </span>
+      </div>
+    </div>
+  );
 };
 
 export default Range;
