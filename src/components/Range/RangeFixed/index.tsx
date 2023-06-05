@@ -1,5 +1,4 @@
 import {
-  useEffect,
   MouseEvent,
   useCallback,
   Dispatch,
@@ -9,8 +8,9 @@ import {
 
 import styles from "components/Range/Range.module.scss";
 import { clamp } from "utils/clamp";
+import useSliderDrag from "utils/useDraggableBullet";
 
-type MouseEventAction = "min" | "max";
+import { MouseEventAction } from "..";
 
 interface Props {
   values: number[];
@@ -75,27 +75,13 @@ const RangeFixed = ({
     [values, dragging, maxValue, minValue, rangeWidth, rangeLeft]
   );
 
-  useEffect(() => {
-    const handleMouseDrag = (event: MouseEvent | any) => {
-      if (dragging) {
-        handleBulletDrag(event);
-      }
-    };
+  const sliderDragProps = {
+    dragging: dragging,
+    handleBulletDrag: handleBulletDrag,
+    handleBulletDragEnd: handleBulletDragEnd,
+  };
 
-    const handleMouseUp = () => {
-      if (dragging) {
-        handleBulletDragEnd();
-      }
-    };
-
-    document.addEventListener("mousemove", handleMouseDrag);
-    document.addEventListener("mouseup", handleMouseUp);
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseDrag);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [dragging]);
+  useSliderDrag(sliderDragProps);
 
   return (
     <div data-testid="range-fixed">

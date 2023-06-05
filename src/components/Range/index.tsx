@@ -20,7 +20,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-type MouseEventAction = "min" | "max";
+export type MouseEventAction = "min" | "max";
 
 const Range = ({ allowedValues, isLoading }: Props) => {
   const values = useMemo(
