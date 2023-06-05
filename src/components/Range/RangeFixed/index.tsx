@@ -4,6 +4,7 @@ import {
   Dispatch,
   MutableRefObject,
   SetStateAction,
+  useState,
 } from "react";
 
 import styles from "components/Range/Range.module.scss";
@@ -18,10 +19,6 @@ import { MouseEventAction } from "..";
 
 interface Props {
   values: number[];
-  minValue: number;
-  setMinValue: Dispatch<SetStateAction<number>>;
-  maxValue: number;
-  setMaxValue: Dispatch<SetStateAction<number>>;
   dragging: MouseEventAction | null;
   setDragging: Dispatch<SetStateAction<MouseEventAction | null>>;
   rangeWidthRef: MutableRefObject<number>;
@@ -30,15 +27,13 @@ interface Props {
 
 const RangeFixed = ({
   values,
-  minValue,
-  setMinValue,
-  maxValue,
-  setMaxValue,
   dragging,
   setDragging,
   rangeWidthRef,
   rangeLeftRef,
 }: Props) => {
+  const [minIndex, setMinIndex] = useState<number>(0);
+  const [maxIndex, setMaxIndex] = useState<number>(values.length - 1);
   const rangeWidth = rangeWidthRef.current;
   const rangeLeft = rangeLeftRef.current;
 
@@ -52,26 +47,26 @@ const RangeFixed = ({
         const newMinIndex = clamp(
           Math.round(((clientX - rangeLeft) / rangeWidth) * values.length),
           0,
-          maxValue
+          maxIndex
         );
 
         // Update the MinIndex state
-        setMinValue(newMinIndex);
+        setMinIndex(newMinIndex);
       }
 
       if (dragging === "max") {
         // Calculate the new value based on the range and limits
         const newMaxIndex = clamp(
           Math.round(((clientX - rangeLeft) / rangeWidth) * values.length),
-          minValue,
+          minIndex,
           values.length - 1
         );
 
         // Update the MinIndex state
-        setMaxValue(newMaxIndex);
+        setMaxIndex(newMaxIndex);
       }
     },
-    [values, dragging, maxValue, minValue, rangeWidth, rangeLeft]
+    [values, dragging, maxIndex, minIndex, rangeWidth, rangeLeft]
   );
 
   const sliderDragProps = {
@@ -88,8 +83,8 @@ const RangeFixed = ({
       <div
         className={styles["range-highlight"]}
         style={{
-          left: `${(minValue / (values.length - 1)) * 100}%`,
-          width: `${((maxValue - minValue) / (values.length - 1)) * 100}%`,
+          left: `${(minIndex / (values.length - 1)) * 100}%`,
+          width: `${((maxIndex - minIndex) / (values.length - 1)) * 100}%`,
         }}
       />
       <div
@@ -98,7 +93,7 @@ const RangeFixed = ({
           dragging === "min" ? styles["dragging"] : ""
         } ${styles["min-bullet"]}`}
         style={{
-          left: `${(minValue / (values.length - 1)) * 100}%`,
+          left: `${(minIndex / (values.length - 1)) * 100}%`,
           transform: "translate(-50%, -50%)",
         }}
         onMouseDown={event =>
@@ -111,7 +106,7 @@ const RangeFixed = ({
           dragging === "max" ? styles["dragging"] : ""
         } ${styles["max-bullet"]} `}
         style={{
-          left: `${(maxValue / (values.length - 1)) * 100}%`,
+          left: `${(maxIndex / (values.length - 1)) * 100}%`,
           transform: "translate(-50%, -50%)",
         }}
         onMouseDown={event =>

@@ -121,10 +121,6 @@ const Range = ({ allowedValues, isLoading }: Props) => {
           {isFixed && (
             <RangeFixed
               values={values}
-              minValue={minValue}
-              setMinValue={setMinValue}
-              maxValue={maxValue}
-              setMaxValue={setMaxValue}
               dragging={dragging}
               setDragging={setDragging}
               rangeWidthRef={rangeWidthRef}
