@@ -110,10 +110,7 @@ const Range = ({ allowedValues, isLoading }: Props) => {
         <div className={`${styles["range-track"]}`} ref={rangeRef}>
           {isDynamic && (
             <RangeDynamic
-              minValue={minValue}
-              setMinValue={setMinValue}
-              maxValue={maxValue}
-              setMaxValue={setMaxValue}
+              values={values}
               dragging={dragging}
               setDragging={setDragging}
               rangeWidthRef={rangeWidthRef}
