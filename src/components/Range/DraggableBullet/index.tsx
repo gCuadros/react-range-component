@@ -1,42 +1,79 @@
 // DragHandle.js
-import React from "react";
-import { MouseEvent } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
-import styles from "./DragHandle.module.css";
+import styles from "components/Range/Range.module.scss";
+import { handleBulletMouseDown } from "utils/rangeInput/mouseHandlers";
+
+import { RangeEventAction } from "..";
+import { useRangeContext } from "../Context/useRangeContext";
 
 interface DragHandleProps {
-  type: "min" | "max";
-  dragging: "min" | "max" | null;
-  handleBulletMouseDown: (
-    event: MouseEvent<HTMLDivElement>,
-    type: "min" | "max"
-  ) => void;
-  handleBulletMouseMove: (event: MouseEvent<HTMLDivElement>) => void;
-  handleBulletMouseUp: () => void;
+  values: number[];
+  dragging: RangeEventAction | null;
+  setDragging: Dispatch<SetStateAction<RangeEventAction | null>>;
 }
 
+interface DraggableBulletStylesProps {
+  "dynamic-min": {
+    left: string;
+    transform: string;
+  };
+  "dynamic-max": {
+    left: string;
+    transform: string;
+  };
+  "fixed-min": {
+    left: string;
+    transform: string;
+  };
+  "fixed-max": {
+    left: string;
+    transform: string;
+  };
+}
+
+const getDraggableBulletStyle = (
+  draggableBulletStyles: DraggableBulletStylesProps,
+  values: number[],
+  dragging: RangeEventAction | null
+) => {
+  if (!dragging) return;
+  const rangeFeature = values.length === 2 ? "dynamic" : "fixed";
+  return draggableBulletStyles[`${rangeFeature}-${dragging}`];
+};
+
 const DraggableBullet = ({
-  type,
+  values,
   dragging,
-  handleBulletMouseDown,
-  handleBulletMouseMove,
-  handleBulletMouseUp,
+  setDragging,
 }: DragHandleProps) => {
+  const { minValue, maxValue } = useRangeContext();
+
+  const draggableBulletStyle = {
+    "dynamic-min": { left: `${minValue}%`, transform: "translate(-50%, -50%)" },
+    "dynamic-max": { left: `${maxValue}%`, transform: "translate(-50%, -50%)" },
+    "fixed-min": {
+      left: `${(minValue / (values.length - 1)) * 100}%`,
+      transform: "translate(-50%, -50%)",
+    },
+    "fixed-max": {
+      left: `${(maxValue / (values.length - 1)) * 100}%`,
+      transform: "translate(-50%, -50%)",
+    },
+  };
+
   return (
     <div
-      data-testid={`${type}-bullet`}
-      className={`${dragging === type ? styles["dragging"] : ""} ${
-        styles[`${type}-bullet`]
-      }`}
-      style={{
-        left: `${type === "min" ? minValue : maxValue}%`,
-        transform: "translate(-50%, -50%)",
-      }}
-      onMouseDown={event => handleBulletMouseDown(event, type)}
-      onMouseMove={handleBulletMouseMove}
-      onMouseUp={handleBulletMouseUp}
+      data-testid="min-bullet"
+      className={`${styles["bullet"]} ${
+        dragging === "min" ? styles["dragging"] : ""
+      } ${styles["min-bullet"]}`}
+      style={getDraggableBulletStyle(draggableBulletStyle, values, dragging)}
+      onMouseDown={event =>
+        handleBulletMouseDown({ event, type: dragging, setDragging })
+      }
     />
   );
 };
 
-export default DragHandle;
+export default DraggableBullet;

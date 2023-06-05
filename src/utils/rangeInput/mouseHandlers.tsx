@@ -4,7 +4,7 @@ import { RangeEventAction } from "components/Range";
 
 export interface handleBulletMouseDownProps {
   event: MouseEvent<HTMLDivElement>;
-  type: RangeEventAction;
+  type: RangeEventAction | null;
   setDragging: Dispatch<SetStateAction<RangeEventAction | null>>;
 }
 
