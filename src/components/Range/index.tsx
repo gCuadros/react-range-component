@@ -38,8 +38,8 @@ const Range = ({ allowedValues, isLoading }: Props) => {
   const defaultMaxValue = isDynamic ? values[1] : values.length - 1;
 
   const rangeRef = useRef<HTMLDivElement>(null);
-  const [minValue, setMinValue] = useState<number>(0);
-  const [maxValue, setMaxValue] = useState<number>(0);
+  const [minValue, setMinValue] = useState<number>(defaultMinValue);
+  const [maxValue, setMaxValue] = useState<number>(defaultMaxValue);
   const [dragging, setDragging] = useState<MouseEventAction | null>(null);
   const rangeWidthRef = useRef<number>(0);
   const rangeLeftRef = useRef<number>(0);
@@ -170,7 +170,11 @@ const Range = ({ allowedValues, isLoading }: Props) => {
             readOnly={isFixed ? true : false}
             inputMode="numeric"
             pattern="[0-9]*"
-            value={isDynamic ? maxValue : values[maxValue]}
+            value={
+              isDynamic
+                ? maxValue
+                : values[maxValue] || values[values.length - 1]
+            }
             min={defaultMinValue}
             max={defaultMaxValue}
             onChange={handleMaxChange}

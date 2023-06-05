@@ -8,6 +8,7 @@ import {
 } from "react";
 
 import styles from "components/Range/Range.module.scss";
+import { clamp } from "utils/clamp";
 
 type MouseEventAction = "min" | "max";
 
@@ -39,38 +40,39 @@ const RangeFixed = ({
   handleBulletMouseDown,
   handleBulletDragEnd,
 }: Props) => {
+  const rangeWidth = rangeWidthRef.current;
+  const rangeLeft = rangeLeftRef.current;
+
   const handleBulletDrag = useCallback(
     (event: MouseEvent) => {
       event.preventDefault();
+      const clientX = event.clientX;
+
       if (dragging === "min") {
-        const newMinIndex = Math.min(
-          Math.max(
-            Math.round(
-              ((event.clientX - rangeLeftRef.current) / rangeWidthRef.current) *
-                values.length
-            ),
-            0
-          ),
+        // Calculate the new value based on the range and limits
+        const newMinIndex = clamp(
+          Math.round(((clientX - rangeLeft) / rangeWidth) * values.length),
+          0,
           maxValue
         );
+
+        // Update the MinIndex state
         setMinValue(newMinIndex);
       }
 
       if (dragging === "max") {
-        const newMaxIndex = Math.max(
-          Math.min(
-            Math.round(
-              ((event.clientX - rangeLeftRef.current) / rangeWidthRef.current) *
-                values.length
-            ),
-            values.length - 1
-          ),
-          minValue
+        // Calculate the new value based on the range and limits
+        const newMaxIndex = clamp(
+          Math.round(((clientX - rangeLeft) / rangeWidth) * values.length),
+          minValue,
+          values.length - 1
         );
+
+        // Update the MinIndex state
         setMaxValue(newMaxIndex);
       }
     },
-    [values, dragging, maxValue, minValue]
+    [values, dragging, maxValue, minValue, rangeWidth, rangeLeft]
   );
 
   useEffect(() => {

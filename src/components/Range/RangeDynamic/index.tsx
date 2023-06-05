@@ -40,6 +40,7 @@ const RangeDynamic = ({
   const handleBulletDrag = useCallback(
     (event: MouseEvent) => {
       event.preventDefault();
+
       if (dragging === "min") {
         const newValue = Math.min(
           Math.max(event.clientX - rangeLeftRef.current, 0),

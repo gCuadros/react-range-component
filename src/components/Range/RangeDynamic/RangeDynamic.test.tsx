@@ -3,33 +3,64 @@ import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import Range from "components/Range";
 
+import RangeDynamic from ".";
+
 const values = [1, 100];
 
 describe("RangeDynamic", () => {
-  it("permite arrastrar los puntos a lo largo de la línea del rango", () => {
+  it("allows dragging the bullet", () => {
+    const setMinValue = jest.fn();
+    const setMaxValue = jest.fn();
+
+    render(
+      <RangeDynamic
+        minValue={1}
+        setMinValue={setMinValue}
+        maxValue={100}
+        setMaxValue={setMaxValue}
+        dragging={"min"}
+        rangeWidthRef={{ current: 100 }}
+        rangeLeftRef={{ current: 0 }}
+        handleBulletMouseDown={jest.fn()}
+        handleBulletDragEnd={jest.fn()}
+      />
+    );
+
+    const minBullet = screen.getByTestId("min-bullet");
+
+    fireEvent.mouseDown(minBullet);
+    fireEvent.mouseMove(document, { clientX: 50 });
+    fireEvent.mouseUp(document);
+
+    expect(setMinValue).toHaveBeenCalledWith(50);
+  });
+
+  it("allows dragging the points along the range line and changing the value of the inputs", async () => {
     render(<Range allowedValues={values} />);
 
     const minBullet = screen.getByTestId("min-bullet");
     const maxBullet = screen.getByTestId("max-bullet");
-    const minBulletStyle = window.getComputedStyle(minBullet);
-    const maxBulletStyle = window.getComputedStyle(maxBullet);
 
     expect(minBullet).toBeInTheDocument();
     expect(maxBullet).toBeInTheDocument();
 
-    fireEvent(minBullet, new MouseEvent("mousedown"));
-    fireEvent(document, new MouseEvent("mousemove", { clientX: 100 }));
-    fireEvent(document, new MouseEvent("mouseup"));
+    const minValueInput: HTMLInputElement = screen.getByTestId("min-value");
+    const maxValueInput: HTMLInputElement = screen.getByTestId("max-value");
 
-    fireEvent(maxBullet, new MouseEvent("mousedown"));
-    fireEvent(document, new MouseEvent("mousemove", { clientX: 200 }));
-    fireEvent(document, new MouseEvent("mouseup"));
+    fireEvent.change(minValueInput, { target: { value: "50" } });
+    fireEvent.blur(minValueInput);
 
-    expect(minBulletStyle.left).toBe("10%");
-    //expect(maxBulletStyle.left).toBe("80%");
+    fireEvent.change(maxValueInput, { target: { value: "200" } });
+    fireEvent.blur(maxValueInput);
+
+    const minBulletStyle = window.getComputedStyle(minBullet);
+    const maxBulletStyle = window.getComputedStyle(maxBullet);
+
+    expect(minBulletStyle.left).toBe("50%");
+    expect(maxBulletStyle.left).toBe("100%");
   });
 
-  it("permite establecer un nuevo valor al hacer clic en las etiquetas de los números de moneda", () => {
+  it("allows setting a new value by clicking on the currency number labels", () => {
     render(<Range allowedValues={values} />);
     const minValueInput: HTMLInputElement = screen.getByTestId("min-value");
     const maxValueInput: HTMLInputElement = screen.getByTestId("max-value");
@@ -44,7 +75,7 @@ describe("RangeDynamic", () => {
     expect(maxValueInput.value).toBe("100");
   });
 
-  it("garantiza que el valor nunca sea menor que el valor mínimo o mayor que el valor máximo", () => {
+  it("ensures that the value is never less than the minimum value or greater than the maximum value", () => {
     render(<Range allowedValues={values} />);
     const minValueInput: HTMLInputElement = screen.getByTestId("min-value");
     const maxValueInput: HTMLInputElement = screen.getByTestId("max-value");
@@ -59,7 +90,7 @@ describe("RangeDynamic", () => {
     expect(maxValueInput.value).toBe("100");
   });
 
-  it("no permite que el valor mínimo y el valor máximo se crucen en el rango", () => {
+  it("does not allow the minimum value and the maximum value to cross over in the range.", () => {
     render(<Range allowedValues={values} />);
     const minValueInput: HTMLInputElement = screen.getByTestId("min-value");
     const maxValueInput: HTMLInputElement = screen.getByTestId("max-value");

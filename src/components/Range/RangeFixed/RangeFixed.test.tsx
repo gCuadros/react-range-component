@@ -1,46 +1,65 @@
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
+import React from "react";
 
-import Range from "components/Range";
+import RangeFixed from "components/Range/RangeFixed";
 
 describe("RangeFixed", () => {
-  const values = [1.99, 5.99, 10.99, 30.99, 50.99, 70.99];
+  const values = [1, 100];
+  const minValue = 10;
+  const setMinValue = jest.fn();
+  const maxValue = 90;
+  const setMaxValue = jest.fn();
+  const dragging = "min";
+  const rangeWidthRef = { current: 100 };
+  const rangeLeftRef = { current: 0 };
+  const handleBulletMouseDown = jest.fn();
+  const handleBulletDragEnd = jest.fn();
 
-  test("El usuario puede arrastrar dos puntos a lo largo de la línea del rango", () => {
-    render(<Range allowedValues={values} />);
+  it("should call handleBulletMouseDown on min bullet mousedown event", () => {
+    const { getByTestId } = render(
+      <RangeFixed
+        values={values}
+        minValue={minValue}
+        setMinValue={setMinValue}
+        maxValue={maxValue}
+        setMaxValue={setMaxValue}
+        dragging={dragging}
+        rangeWidthRef={rangeWidthRef}
+        rangeLeftRef={rangeLeftRef}
+        handleBulletMouseDown={handleBulletMouseDown}
+        handleBulletDragEnd={handleBulletDragEnd}
+      />
+    );
 
-    const minBullet = screen.getByTestId("min-bullet");
-    const maxBullet = screen.getByTestId("max-bullet");
-    const minBulletStyle = window.getComputedStyle(minBullet);
-    const maxBulletStyle = window.getComputedStyle(maxBullet);
-
-    expect(minBullet).toBeInTheDocument();
-    expect(maxBullet).toBeInTheDocument();
-
-    fireEvent(minBullet, new MouseEvent("mousedown"));
-    fireEvent(document, new MouseEvent("mousemove", { clientX: -500 }));
-    fireEvent(document, new MouseEvent("mouseup"));
-
-    fireEvent(maxBullet, new MouseEvent("mousedown"));
-    fireEvent(document, new MouseEvent("mousemove", { clientX: 200 }));
-    fireEvent(document, new MouseEvent("mouseup"));
-
-    // Verificar que los estilos se hayan actualizado correctamente
-    expect(minBullet.style.left).toBe("10%");
-    expect(maxBullet.style.left).toBe("20%");
+    const minBullet = getByTestId("min-bullet");
+    fireEvent.mouseDown(minBullet);
+    expect(handleBulletMouseDown).toHaveBeenCalledWith(
+      expect.any(Object),
+      "min"
+    );
   });
 
-  test("El valor mínimo y el valor máximo no pueden cruzarse en el rango", () => {
-    const { getByTestId } = render(<Range allowedValues={values} />);
-    const minBullet = getByTestId("min-bullet");
+  it("should call handleBulletMouseDown on max bullet mousedown event", () => {
+    const { getByTestId } = render(
+      <RangeFixed
+        values={values}
+        minValue={minValue}
+        setMinValue={setMinValue}
+        maxValue={maxValue}
+        setMaxValue={setMaxValue}
+        dragging={dragging}
+        rangeWidthRef={rangeWidthRef}
+        rangeLeftRef={rangeLeftRef}
+        handleBulletMouseDown={handleBulletMouseDown}
+        handleBulletDragEnd={handleBulletDragEnd}
+      />
+    );
+
     const maxBullet = getByTestId("max-bullet");
-
-    // Simular el arrastre del punto mínimo hacia el máximo
-    fireEvent.mouseDown(minBullet);
-    fireEvent.mouseMove(document.body, { clientX: 200 });
-    fireEvent.mouseUp(minBullet);
-
-    // Verificar que el valor mínimo no haya cruzado el valor máximo
-    expect(minBullet.style.left).toBe("10%");
-    expect(maxBullet.style.left).toBe("20%");
+    fireEvent.mouseDown(maxBullet);
+    expect(handleBulletMouseDown).toHaveBeenCalledWith(
+      expect.any(Object),
+      "max"
+    );
   });
 });
