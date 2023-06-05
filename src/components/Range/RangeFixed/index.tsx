@@ -8,7 +8,7 @@ import {
 
 import styles from "components/Range/Range.module.scss";
 import { clamp } from "utils/clamp";
-import useSliderDrag from "utils/useDraggableBullet";
+import useSliderDrag from "utils/rangeInput/useDraggableBullet";
 
 import { MouseEventAction } from "..";
 

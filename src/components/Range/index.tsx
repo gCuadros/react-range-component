@@ -1,12 +1,4 @@
-import {
-  useState,
-  useRef,
-  useMemo,
-  useEffect,
-  useCallback,
-  MouseEvent,
-  ChangeEvent,
-} from "react";
+import { useState, useRef, useMemo, useEffect, ChangeEvent } from "react";
 
 import styles from "components/Range/Range.module.scss";
 import SkeletonLine from "components/SkeletonLine";
@@ -86,18 +78,6 @@ const Range = ({ allowedValues, isLoading }: Props) => {
     setMaxValue(Math.max(value, minValue));
   };
 
-  const handleBulletMouseDown = useCallback(
-    (event: MouseEvent<HTMLDivElement>, type: MouseEventAction) => {
-      event.preventDefault();
-      setDragging(type);
-    },
-    []
-  );
-
-  const handleBulletDragEnd = useCallback(() => {
-    setDragging(null);
-  }, []);
-
   if (isLoading || !values)
     return (
       <div className={styles["range-box"]}>
@@ -135,10 +115,9 @@ const Range = ({ allowedValues, isLoading }: Props) => {
               maxValue={maxValue}
               setMaxValue={setMaxValue}
               dragging={dragging}
+              setDragging={setDragging}
               rangeWidthRef={rangeWidthRef}
               rangeLeftRef={rangeLeftRef}
-              handleBulletMouseDown={handleBulletMouseDown}
-              handleBulletDragEnd={handleBulletDragEnd}
             />
           )}
 
@@ -152,8 +131,6 @@ const Range = ({ allowedValues, isLoading }: Props) => {
               dragging={dragging}
               rangeWidthRef={rangeWidthRef}
               rangeLeftRef={rangeLeftRef}
-              handleBulletMouseDown={handleBulletMouseDown}
-              handleBulletDragEnd={handleBulletDragEnd}
             />
           )}
         </div>

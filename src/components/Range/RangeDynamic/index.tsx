@@ -7,7 +7,11 @@ import React, {
 } from "react";
 
 import styles from "components/Range/Range.module.scss";
-import useSliderDrag from "utils/useDraggableBullet";
+import {
+  handleBulletDragEnd,
+  handleBulletMouseDown,
+} from "utils/rangeInput/mouseHandlers";
+import useSliderDrag from "utils/rangeInput/useDraggableBullet";
 
 import { MouseEventAction } from "..";
 
@@ -17,13 +21,9 @@ interface Props {
   maxValue: number;
   setMaxValue: Dispatch<SetStateAction<number>>;
   dragging: MouseEventAction | null;
+  setDragging: Dispatch<SetStateAction<MouseEventAction | null>>;
   rangeWidthRef: MutableRefObject<number>;
   rangeLeftRef: MutableRefObject<number>;
-  handleBulletMouseDown: (
-    event: MouseEvent<HTMLDivElement>,
-    type: MouseEventAction
-  ) => void;
-  handleBulletDragEnd: () => void;
 }
 
 const RangeDynamic = ({
@@ -32,10 +32,9 @@ const RangeDynamic = ({
   maxValue,
   setMaxValue,
   dragging,
+  setDragging,
   rangeWidthRef,
   rangeLeftRef,
-  handleBulletMouseDown,
-  handleBulletDragEnd,
 }: Props) => {
   const rangeWidth = rangeWidthRef.current;
   const rangeLeft = rangeLeftRef.current;
@@ -64,9 +63,10 @@ const RangeDynamic = ({
   );
 
   const sliderDragProps = {
-    dragging: dragging,
-    handleBulletDrag: handleBulletDrag,
-    handleBulletDragEnd: handleBulletDragEnd,
+    dragging,
+    handleBulletDrag,
+    handleBulletDragEnd,
+    setDragging,
   };
 
   useSliderDrag(sliderDragProps);
@@ -83,7 +83,9 @@ const RangeDynamic = ({
           dragging === "min" ? styles["dragging"] : ""
         } ${styles["min-bullet"]}`}
         style={{ left: `${minValue}%`, transform: "translate(-50%, -50%)" }}
-        onMouseDown={event => handleBulletMouseDown(event, "min")}
+        onMouseDown={event =>
+          handleBulletMouseDown({ event, type: "min", setDragging })
+        }
       />
       <div
         data-testid="max-bullet"
@@ -91,7 +93,9 @@ const RangeDynamic = ({
           dragging === "max" ? styles["dragging"] : ""
         } ${styles["max-bullet"]} `}
         style={{ left: `${maxValue}%`, transform: "translate(-50%, -50%)" }}
-        onMouseDown={event => handleBulletMouseDown(event, "max")}
+        onMouseDown={event =>
+          handleBulletMouseDown({ event, type: "max", setDragging })
+        }
       />
     </div>
   );
