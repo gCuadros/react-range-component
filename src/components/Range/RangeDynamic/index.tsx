@@ -14,13 +14,13 @@ import {
 } from "utils/rangeInput/mouseHandlers";
 import useSliderDrag from "utils/rangeInput/useDraggableBullet";
 
-import { MouseEventAction } from "..";
+import { RangeEventAction } from "..";
 import { useRangeContext } from "../Context/useRangeContext";
 
 interface Props {
   values: number[];
-  dragging: MouseEventAction | null;
-  setDragging: Dispatch<SetStateAction<MouseEventAction | null>>;
+  dragging: RangeEventAction | null;
+  setDragging: Dispatch<SetStateAction<RangeEventAction | null>>;
   rangeWidthRef: MutableRefObject<number>;
   rangeLeftRef: MutableRefObject<number>;
 }

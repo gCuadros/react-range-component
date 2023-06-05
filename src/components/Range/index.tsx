@@ -13,7 +13,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-export type MouseEventAction = "min" | "max";
+export type RangeEventAction = "min" | "max";
 
 const Range = ({ allowedValues, isLoading }: Props) => {
   const values = useMemo(
@@ -32,7 +32,7 @@ const Range = ({ allowedValues, isLoading }: Props) => {
   const rangeRef = useRef<HTMLDivElement>(null);
   const rangeWidthRef = useRef<number>(0);
   const rangeLeftRef = useRef<number>(0);
-  const [dragging, setDragging] = useState<MouseEventAction | null>(null);
+  const [dragging, setDragging] = useState<RangeEventAction | null>(null);
 
   useEffect(() => {
     const handleResize = () => {

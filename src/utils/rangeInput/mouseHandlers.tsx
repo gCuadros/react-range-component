@@ -1,15 +1,15 @@
 import { Dispatch, MouseEvent, SetStateAction } from "react";
 
-import { MouseEventAction } from "components/Range";
+import { RangeEventAction } from "components/Range";
 
 export interface handleBulletMouseDownProps {
   event: MouseEvent<HTMLDivElement>;
-  type: MouseEventAction;
-  setDragging: Dispatch<SetStateAction<MouseEventAction | null>>;
+  type: RangeEventAction;
+  setDragging: Dispatch<SetStateAction<RangeEventAction | null>>;
 }
 
 export interface handleBulletDragEndProps {
-  setDragging: Dispatch<SetStateAction<MouseEventAction | null>>;
+  setDragging: Dispatch<SetStateAction<RangeEventAction | null>>;
 }
 
 export const handleBulletMouseDown = ({

@@ -1,14 +1,14 @@
 import { useEffect, MouseEvent, Dispatch, SetStateAction } from "react";
 
-import { MouseEventAction } from "components/Range";
+import { RangeEventAction } from "components/Range";
 
 import { handleBulletDragEndProps } from "./mouseHandlers";
 
 interface Props {
-  dragging: MouseEventAction | null;
+  dragging: RangeEventAction | null;
   handleBulletDrag: (event: MouseEvent) => void;
   handleBulletDragEnd: ({ setDragging }: handleBulletDragEndProps) => void;
-  setDragging: Dispatch<SetStateAction<MouseEventAction | null>>;
+  setDragging: Dispatch<SetStateAction<RangeEventAction | null>>;
 }
 
 const useSliderDrag = ({

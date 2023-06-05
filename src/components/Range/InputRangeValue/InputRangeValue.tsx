@@ -3,12 +3,12 @@ import { ChangeEvent } from "react";
 import styles from "components/Range/Range.module.scss";
 import { isNumericString } from "utils/isNumericString";
 
-import { MouseEventAction } from "..";
+import { RangeEventAction } from "..";
 import { useRangeContext } from "../Context/useRangeContext";
 
 interface Props {
   values: number[];
-  type: MouseEventAction;
+  type: RangeEventAction;
   isFixed: boolean;
   isDynamic: boolean;
   defaultMinValue: number;
@@ -49,7 +49,11 @@ const InputRangeValue = ({
 
   return (
     <span
-      className={`${styles["input-wrapper"]} ${styles["input-wrapper--left"]} `}
+      className={`${styles["input-wrapper"]} ${
+        type === "min"
+          ? styles["input-wrapper--left"]
+          : styles["input-wrapper--right"]
+      } `}
     >
       {type === "min" && (
         <input
