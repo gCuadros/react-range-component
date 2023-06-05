@@ -8,6 +8,10 @@ import {
 
 import styles from "components/Range/Range.module.scss";
 import { clamp } from "utils/clamp";
+import {
+  handleBulletMouseDown,
+  handleBulletDragEnd,
+} from "utils/rangeInput/mouseHandlers";
 import useSliderDrag from "utils/rangeInput/useDraggableBullet";
 
 import { MouseEventAction } from "..";
@@ -19,13 +23,9 @@ interface Props {
   maxValue: number;
   setMaxValue: Dispatch<SetStateAction<number>>;
   dragging: MouseEventAction | null;
+  setDragging: Dispatch<SetStateAction<MouseEventAction | null>>;
   rangeWidthRef: MutableRefObject<number>;
   rangeLeftRef: MutableRefObject<number>;
-  handleBulletMouseDown: (
-    event: MouseEvent<HTMLDivElement>,
-    type: MouseEventAction
-  ) => void;
-  handleBulletDragEnd: () => void;
 }
 
 const RangeFixed = ({
@@ -35,10 +35,9 @@ const RangeFixed = ({
   maxValue,
   setMaxValue,
   dragging,
+  setDragging,
   rangeWidthRef,
   rangeLeftRef,
-  handleBulletMouseDown,
-  handleBulletDragEnd,
 }: Props) => {
   const rangeWidth = rangeWidthRef.current;
   const rangeLeft = rangeLeftRef.current;
@@ -76,9 +75,10 @@ const RangeFixed = ({
   );
 
   const sliderDragProps = {
-    dragging: dragging,
-    handleBulletDrag: handleBulletDrag,
-    handleBulletDragEnd: handleBulletDragEnd,
+    dragging,
+    handleBulletDrag,
+    handleBulletDragEnd,
+    setDragging,
   };
 
   useSliderDrag(sliderDragProps);
@@ -101,7 +101,9 @@ const RangeFixed = ({
           left: `${(minValue / (values.length - 1)) * 100}%`,
           transform: "translate(-50%, -50%)",
         }}
-        onMouseDown={event => handleBulletMouseDown(event, "min")}
+        onMouseDown={event =>
+          handleBulletMouseDown({ event, type: "min", setDragging })
+        }
       />
       <div
         data-testid="max-bullet"
@@ -112,7 +114,9 @@ const RangeFixed = ({
           left: `${(maxValue / (values.length - 1)) * 100}%`,
           transform: "translate(-50%, -50%)",
         }}
-        onMouseDown={event => handleBulletMouseDown(event, "max")}
+        onMouseDown={event =>
+          handleBulletMouseDown({ event, type: "max", setDragging })
+        }
       />
     </div>
   );

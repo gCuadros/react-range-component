@@ -129,6 +129,7 @@ const Range = ({ allowedValues, isLoading }: Props) => {
               maxValue={maxValue}
               setMaxValue={setMaxValue}
               dragging={dragging}
+              setDragging={setDragging}
               rangeWidthRef={rangeWidthRef}
               rangeLeftRef={rangeLeftRef}
             />
