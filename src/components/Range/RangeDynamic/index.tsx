@@ -37,33 +37,26 @@ const RangeDynamic = ({
   handleBulletMouseDown,
   handleBulletDragEnd,
 }: Props) => {
+  const rangeWidth = rangeWidthRef.current;
+  const rangeLeft = rangeLeftRef.current;
+
   const handleBulletDrag = useCallback(
     (event: MouseEvent) => {
       event.preventDefault();
 
+      const clientX = event.clientX;
+
       if (dragging === "min") {
-        const newValue = Math.min(
-          Math.max(event.clientX - rangeLeftRef.current, 0),
-          rangeWidthRef.current
-        );
+        const newValue = Math.min(Math.max(clientX - rangeLeft, 0), rangeWidth);
         setMinValue(
-          Math.min(
-            Math.round((newValue / rangeWidthRef.current) * 100),
-            maxValue
-          )
+          Math.min(Math.round((newValue / rangeWidth) * 100), maxValue)
         );
       }
 
       if (dragging === "max") {
-        const newValue = Math.min(
-          Math.max(event.clientX - rangeLeftRef.current, 0),
-          rangeWidthRef.current
-        );
+        const newValue = Math.min(Math.max(clientX - rangeLeft, 0), rangeWidth);
         setMaxValue(
-          Math.max(
-            Math.round((newValue / rangeWidthRef.current) * 100),
-            minValue
-          )
+          Math.max(Math.round((newValue / rangeWidth) * 100), minValue)
         );
       }
     },

@@ -113,11 +113,9 @@ const Range = ({ allowedValues, isLoading }: Props) => {
         >
           <input
             id="minValue"
-            type="text"
+            type="number"
             data-testid="min-value"
             readOnly={isFixed ? true : false}
-            inputMode="numeric"
-            pattern="[0-9]*"
             value={isDynamic ? minValue : values[minValue]}
             min={defaultMinValue}
             max={defaultMaxValue}
@@ -165,11 +163,9 @@ const Range = ({ allowedValues, isLoading }: Props) => {
         >
           <input
             id="maxValue"
-            type="text"
+            type="number"
             data-testid="max-value"
             readOnly={isFixed ? true : false}
-            inputMode="numeric"
-            pattern="[0-9]*"
             value={
               isDynamic
                 ? maxValue
