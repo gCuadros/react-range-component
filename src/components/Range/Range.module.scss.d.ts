@@ -13,6 +13,7 @@ interface CssExports {
   'range-box': string;
   'range-container': string;
   'range-handler': string;
+  'range-handler--fixed': string;
   'range-highlight': string;
   'range-track': string;
 }

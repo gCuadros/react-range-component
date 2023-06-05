@@ -1,4 +1,10 @@
-// Range.module.scss
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0;
+}
 
 .range-box {
   max-width: 400px;
@@ -25,10 +31,16 @@
     .range-handler {
       font-size: 16px;
       font-family: "circular";
+      text-align: center;
       border: none;
       outline: none;
       border-bottom: 1px solid #9f9f9f;
-      max-width: 30px;
+      width: 42px;
+
+      &--fixed {
+        border-bottom: none;
+        cursor: default;
+      }
     }
 
     .range-track {
