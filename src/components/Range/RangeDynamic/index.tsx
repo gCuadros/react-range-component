@@ -1,44 +1,45 @@
 import React, {
-  useEffect,
   MouseEvent,
   useCallback,
   MutableRefObject,
   Dispatch,
   SetStateAction,
+  useEffect,
 } from "react";
 
 import styles from "components/Range/Range.module.scss";
+import {
+  handleBulletDragEnd,
+  handleBulletMouseDown,
+} from "utils/rangeInput/mouseHandlers";
+import useSliderDrag from "utils/rangeInput/useDraggableBullet";
 
-type MouseEventAction = "min" | "max";
+import { RangeEventAction } from "..";
+import { useRangeContext } from "../Context/useRangeContext";
 
 interface Props {
-  minValue: number;
-  setMinValue: Dispatch<SetStateAction<number>>;
-  maxValue: number;
-  setMaxValue: Dispatch<SetStateAction<number>>;
-  dragging: MouseEventAction | null;
+  values: number[];
+  dragging: RangeEventAction | null;
+  setDragging: Dispatch<SetStateAction<RangeEventAction | null>>;
   rangeWidthRef: MutableRefObject<number>;
   rangeLeftRef: MutableRefObject<number>;
-  handleBulletMouseDown: (
-    event: MouseEvent<HTMLDivElement>,
-    type: MouseEventAction
-  ) => void;
-  handleBulletDragEnd: () => void;
 }
 
 const RangeDynamic = ({
-  minValue,
-  setMinValue,
-  maxValue,
-  setMaxValue,
+  values,
   dragging,
+  setDragging,
   rangeWidthRef,
   rangeLeftRef,
-  handleBulletMouseDown,
-  handleBulletDragEnd,
 }: Props) => {
+  const { minValue, setMinValue, maxValue, setMaxValue } = useRangeContext();
   const rangeWidth = rangeWidthRef.current;
   const rangeLeft = rangeLeftRef.current;
+
+  useEffect(() => {
+    setMinValue(values[0]);
+    setMaxValue(values[1]);
+  }, [values]);
 
   const handleBulletDrag = useCallback(
     (event: MouseEvent) => {
@@ -63,27 +64,14 @@ const RangeDynamic = ({
     [dragging, maxValue, minValue]
   );
 
-  useEffect(() => {
-    const handleMouseDrag = (event: MouseEvent | any) => {
-      if (dragging) {
-        handleBulletDrag(event);
-      }
-    };
+  const sliderDragProps = {
+    dragging,
+    handleBulletDrag,
+    handleBulletDragEnd,
+    setDragging,
+  };
 
-    const handleMouseUp = () => {
-      if (dragging) {
-        handleBulletDragEnd();
-      }
-    };
-
-    document.addEventListener("mousemove", handleMouseDrag);
-    document.addEventListener("mouseup", handleMouseUp);
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseDrag);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [dragging]);
+  useSliderDrag(sliderDragProps);
 
   return (
     <div data-testid="range-dynamic">
@@ -97,7 +85,9 @@ const RangeDynamic = ({
           dragging === "min" ? styles["dragging"] : ""
         } ${styles["min-bullet"]}`}
         style={{ left: `${minValue}%`, transform: "translate(-50%, -50%)" }}
-        onMouseDown={event => handleBulletMouseDown(event, "min")}
+        onMouseDown={event =>
+          handleBulletMouseDown({ event, type: "min", setDragging })
+        }
       />
       <div
         data-testid="max-bullet"
@@ -105,7 +95,9 @@ const RangeDynamic = ({
           dragging === "max" ? styles["dragging"] : ""
         } ${styles["max-bullet"]} `}
         style={{ left: `${maxValue}%`, transform: "translate(-50%, -50%)" }}
-        onMouseDown={event => handleBulletMouseDown(event, "max")}
+        onMouseDown={event =>
+          handleBulletMouseDown({ event, type: "max", setDragging })
+        }
       />
     </div>
   );

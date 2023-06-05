@@ -1,47 +1,46 @@
 import {
-  useEffect,
   MouseEvent,
   useCallback,
   Dispatch,
   MutableRefObject,
   SetStateAction,
+  useEffect,
 } from "react";
 
 import styles from "components/Range/Range.module.scss";
 import { clamp } from "utils/clamp";
+import {
+  handleBulletMouseDown,
+  handleBulletDragEnd,
+} from "utils/rangeInput/mouseHandlers";
+import useSliderDrag from "utils/rangeInput/useDraggableBullet";
 
-type MouseEventAction = "min" | "max";
+import { RangeEventAction } from "..";
+import { useRangeContext } from "../Context/useRangeContext";
 
 interface Props {
   values: number[];
-  minValue: number;
-  setMinValue: Dispatch<SetStateAction<number>>;
-  maxValue: number;
-  setMaxValue: Dispatch<SetStateAction<number>>;
-  dragging: MouseEventAction | null;
+  dragging: RangeEventAction | null;
+  setDragging: Dispatch<SetStateAction<RangeEventAction | null>>;
   rangeWidthRef: MutableRefObject<number>;
   rangeLeftRef: MutableRefObject<number>;
-  handleBulletMouseDown: (
-    event: MouseEvent<HTMLDivElement>,
-    type: MouseEventAction
-  ) => void;
-  handleBulletDragEnd: () => void;
 }
 
 const RangeFixed = ({
   values,
-  minValue,
-  setMinValue,
-  maxValue,
-  setMaxValue,
   dragging,
+  setDragging,
   rangeWidthRef,
   rangeLeftRef,
-  handleBulletMouseDown,
-  handleBulletDragEnd,
 }: Props) => {
+  const { minValue, setMinValue, maxValue, setMaxValue } = useRangeContext();
   const rangeWidth = rangeWidthRef.current;
   const rangeLeft = rangeLeftRef.current;
+
+  useEffect(() => {
+    setMinValue(0);
+    setMaxValue(values.length - 1);
+  }, [values]);
 
   const handleBulletDrag = useCallback(
     (event: MouseEvent) => {
@@ -75,27 +74,14 @@ const RangeFixed = ({
     [values, dragging, maxValue, minValue, rangeWidth, rangeLeft]
   );
 
-  useEffect(() => {
-    const handleMouseDrag = (event: MouseEvent | any) => {
-      if (dragging) {
-        handleBulletDrag(event);
-      }
-    };
+  const sliderDragProps = {
+    dragging,
+    handleBulletDrag,
+    handleBulletDragEnd,
+    setDragging,
+  };
 
-    const handleMouseUp = () => {
-      if (dragging) {
-        handleBulletDragEnd();
-      }
-    };
-
-    document.addEventListener("mousemove", handleMouseDrag);
-    document.addEventListener("mouseup", handleMouseUp);
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseDrag);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [dragging]);
+  useSliderDrag(sliderDragProps);
 
   return (
     <div data-testid="range-fixed">
@@ -115,7 +101,9 @@ const RangeFixed = ({
           left: `${(minValue / (values.length - 1)) * 100}%`,
           transform: "translate(-50%, -50%)",
         }}
-        onMouseDown={event => handleBulletMouseDown(event, "min")}
+        onMouseDown={event =>
+          handleBulletMouseDown({ event, type: "min", setDragging })
+        }
       />
       <div
         data-testid="max-bullet"
@@ -126,7 +114,9 @@ const RangeFixed = ({
           left: `${(maxValue / (values.length - 1)) * 100}%`,
           transform: "translate(-50%, -50%)",
         }}
-        onMouseDown={event => handleBulletMouseDown(event, "max")}
+        onMouseDown={event =>
+          handleBulletMouseDown({ event, type: "max", setDragging })
+        }
       />
     </div>
   );

@@ -3,38 +3,9 @@ import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import Range from "components/Range";
 
-import RangeDynamic from ".";
-
 const values = [1, 100];
 
 describe("RangeDynamic", () => {
-  it("allows dragging the bullet", () => {
-    const setMinValue = jest.fn();
-    const setMaxValue = jest.fn();
-
-    render(
-      <RangeDynamic
-        minValue={1}
-        setMinValue={setMinValue}
-        maxValue={100}
-        setMaxValue={setMaxValue}
-        dragging={"min"}
-        rangeWidthRef={{ current: 100 }}
-        rangeLeftRef={{ current: 0 }}
-        handleBulletMouseDown={jest.fn()}
-        handleBulletDragEnd={jest.fn()}
-      />
-    );
-
-    const minBullet = screen.getByTestId("min-bullet");
-
-    fireEvent.mouseDown(minBullet);
-    fireEvent.mouseMove(document, { clientX: 50 });
-    fireEvent.mouseUp(document);
-
-    expect(setMinValue).toHaveBeenCalledWith(50);
-  });
-
   it("allows dragging the points along the range line and changing the value of the inputs", async () => {
     render(<Range allowedValues={values} />);
 
