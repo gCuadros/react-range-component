@@ -3,9 +3,52 @@ import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import Range from "components/Range";
 
+import "jest";
+import RangeDynamic from ".";
+
 const values = [1, 100];
 
 describe("RangeDynamic", () => {
+  it("Should move the bullet with the maximum value when dragging it?", () => {
+    const rangeWidthRef = { current: 220 };
+    const rangeLeftRef = { current: 305 };
+
+    render(
+      <RangeDynamic
+        values={[1, 100]}
+        dragging={"min"}
+        setDragging={jest.fn()}
+        rangeWidthRef={rangeWidthRef}
+        rangeLeftRef={rangeLeftRef}
+      />
+    );
+
+    fireEvent.mouseDown(screen.getByTestId("min-bullet"));
+    fireEvent.mouseMove(screen.getByTestId("min-bullet"), { clientX: 3000 });
+
+    expect(screen.getByTestId("min-bullet")).toHaveClass("dragging");
+  });
+
+  it("Should move the bullet with the maximum value when dragging it", () => {
+    const rangeWidthRef = { current: 220 };
+    const rangeLeftRef = { current: 305 };
+
+    render(
+      <RangeDynamic
+        values={[1, 100]}
+        dragging={"max"}
+        setDragging={jest.fn()}
+        rangeWidthRef={rangeWidthRef}
+        rangeLeftRef={rangeLeftRef}
+      />
+    );
+
+    fireEvent.mouseDown(screen.getByTestId("max-bullet"));
+    fireEvent.mouseMove(screen.getByTestId("max-bullet"), { clientX: 3000 });
+
+    expect(screen.getByTestId("max-bullet")).toHaveClass("dragging");
+  });
+
   it("allows dragging the points along the range line and changing the value of the inputs", async () => {
     render(<Range allowedValues={values} />);
 

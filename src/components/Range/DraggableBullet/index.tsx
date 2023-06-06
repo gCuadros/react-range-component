@@ -1,4 +1,3 @@
-// DragHandle.js
 import React, { Dispatch, SetStateAction } from "react";
 
 import styles from "components/Range/Range.module.scss";
