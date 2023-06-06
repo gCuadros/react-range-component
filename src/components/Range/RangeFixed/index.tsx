@@ -15,7 +15,7 @@ import {
 } from "utils/rangeInput/mouseHandlers";
 import useSliderDrag from "utils/rangeInput/useDraggableBullet";
 
-import { RangeEventAction } from "..";
+import { RANGE_ACTION_TYPE, RangeEventAction } from "..";
 import { useRangeContext } from "../Context/useRangeContext";
 
 interface Props {
@@ -47,7 +47,7 @@ const RangeFixed = ({
       event.preventDefault();
       const clientX = event.clientX;
 
-      if (dragging === "min") {
+      if (dragging === RANGE_ACTION_TYPE.MIN) {
         // Calculate the new value based on the range and limits
         const newMinIndex = clamp(
           Math.round(((clientX - rangeLeft) / rangeWidth) * values.length),
@@ -59,7 +59,7 @@ const RangeFixed = ({
         setMinValue(newMinIndex);
       }
 
-      if (dragging === "max") {
+      if (dragging === RANGE_ACTION_TYPE.MAX) {
         // Calculate the new value based on the range and limits
         const newMaxIndex = clamp(
           Math.round(((clientX - rangeLeft) / rangeWidth) * values.length),
@@ -95,27 +95,35 @@ const RangeFixed = ({
       <div
         data-testid="min-bullet"
         className={`${styles["bullet"]} ${
-          dragging === "min" ? styles["dragging"] : ""
+          dragging === RANGE_ACTION_TYPE.MIN ? styles["dragging"] : ""
         } ${styles["min-bullet"]}`}
         style={{
           left: `${(minValue / (values.length - 1)) * 100}%`,
           transform: "translate(-50%, -50%)",
         }}
         onMouseDown={event =>
-          handleBulletMouseDown({ event, type: "min", setDragging })
+          handleBulletMouseDown({
+            event,
+            type: RANGE_ACTION_TYPE.MIN,
+            setDragging,
+          })
         }
       />
       <div
         data-testid="max-bullet"
         className={`${styles["bullet"]} ${
-          dragging === "max" ? styles["dragging"] : ""
+          dragging === RANGE_ACTION_TYPE.MAX ? styles["dragging"] : ""
         } ${styles["max-bullet"]} `}
         style={{
           left: `${(maxValue / (values.length - 1)) * 100}%`,
           transform: "translate(-50%, -50%)",
         }}
         onMouseDown={event =>
-          handleBulletMouseDown({ event, type: "max", setDragging })
+          handleBulletMouseDown({
+            event,
+            type: RANGE_ACTION_TYPE.MAX,
+            setDragging,
+          })
         }
       />
     </div>

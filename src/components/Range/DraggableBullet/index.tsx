@@ -1,10 +1,9 @@
-// DragHandle.js
 import React, { Dispatch, SetStateAction } from "react";
 
 import styles from "components/Range/Range.module.scss";
 import { handleBulletMouseDown } from "utils/rangeInput/mouseHandlers";
 
-import { RangeEventAction } from "..";
+import { RANGE_ACTION_TYPE, RangeEventAction } from "..";
 import { useRangeContext } from "../Context/useRangeContext";
 
 interface DragHandleProps {
@@ -66,7 +65,7 @@ const DraggableBullet = ({
     <div
       data-testid="min-bullet"
       className={`${styles["bullet"]} ${
-        dragging === "min" ? styles["dragging"] : ""
+        dragging === RANGE_ACTION_TYPE.MIN ? styles["dragging"] : ""
       } ${styles["min-bullet"]}`}
       style={getDraggableBulletStyle(draggableBulletStyle, values, dragging)}
       onMouseDown={event =>

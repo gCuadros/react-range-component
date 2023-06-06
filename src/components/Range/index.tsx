@@ -14,6 +14,10 @@ interface Props {
 }
 
 export type RangeEventAction = "min" | "max";
+export enum RANGE_ACTION_TYPE {
+  MIN = "min",
+  MAX = "max",
+}
 
 const Range = ({ allowedValues, isLoading }: Props) => {
   const values = useMemo(
@@ -64,7 +68,7 @@ const Range = ({ allowedValues, isLoading }: Props) => {
       <div className={styles["range-box"]}>
         <div className={styles["range-container"]}>
           <InputRangeValue
-            type="min"
+            type={RANGE_ACTION_TYPE.MIN}
             values={values}
             isFixed={isFixed}
             isDynamic={isDynamic}
@@ -95,7 +99,7 @@ const Range = ({ allowedValues, isLoading }: Props) => {
           </div>
 
           <InputRangeValue
-            type="max"
+            type={RANGE_ACTION_TYPE.MAX}
             values={values}
             isFixed={isFixed}
             isDynamic={isDynamic}
