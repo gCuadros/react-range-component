@@ -3,7 +3,6 @@ import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import Range, { RANGE_ACTION_TYPE } from "components/Range";
 
-import "jest";
 import RangeDynamic from ".";
 
 const values = [1, 100];
