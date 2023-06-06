@@ -1,5 +1,7 @@
 import { fireEvent, render } from "@testing-library/react";
 
+import { RANGE_ACTION_TYPE } from "..";
+
 import RangeFixed from ".";
 
 describe("RangeFixed", () => {
@@ -27,7 +29,7 @@ describe("RangeFixed", () => {
     const { getByTestId } = render(
       <RangeFixed
         values={[0, 50, 100]}
-        dragging={"min"}
+        dragging={RANGE_ACTION_TYPE.MIN}
         setDragging={jest.fn()}
         rangeWidthRef={{ current: 1000 }}
         rangeLeftRef={{ current: 0 }}
@@ -44,7 +46,7 @@ describe("RangeFixed", () => {
     const { getByTestId } = render(
       <RangeFixed
         values={[0, 50, 100]}
-        dragging={"max"}
+        dragging={RANGE_ACTION_TYPE.MAX}
         setDragging={jest.fn()}
         rangeWidthRef={{ current: 1000 }}
         rangeLeftRef={{ current: 0 }}

@@ -1,7 +1,7 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 
 import "@testing-library/jest-dom/extend-expect";
-import Range from "components/Range";
+import Range, { RANGE_ACTION_TYPE } from "components/Range";
 
 import "jest";
 import RangeDynamic from ".";
@@ -16,7 +16,7 @@ describe("RangeDynamic", () => {
     render(
       <RangeDynamic
         values={[1, 100]}
-        dragging={"min"}
+        dragging={RANGE_ACTION_TYPE.MIN}
         setDragging={jest.fn()}
         rangeWidthRef={rangeWidthRef}
         rangeLeftRef={rangeLeftRef}
@@ -36,7 +36,7 @@ describe("RangeDynamic", () => {
     render(
       <RangeDynamic
         values={[1, 100]}
-        dragging={"max"}
+        dragging={RANGE_ACTION_TYPE.MAX}
         setDragging={jest.fn()}
         rangeWidthRef={rangeWidthRef}
         rangeLeftRef={rangeLeftRef}
