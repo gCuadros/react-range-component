@@ -25,7 +25,7 @@ describe("RangeFixed", () => {
     expect(maxBullet).toBeInTheDocument();
   });
 
-  it("Should move the bullet with the maximum value when dragging it", () => {
+  it("Should move the bullet with the minimun value when dragging it", () => {
     const { getByTestId } = render(
       <RangeFixed
         values={[0, 50, 100]}
