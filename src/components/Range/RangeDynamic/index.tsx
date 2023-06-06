@@ -14,7 +14,7 @@ import {
 } from "utils/rangeInput/mouseHandlers";
 import useSliderDrag from "utils/rangeInput/useDraggableBullet";
 
-import { RangeEventAction } from "..";
+import { RANGE_ACTION_TYPE, RangeEventAction } from "..";
 import { useRangeContext } from "../Context/useRangeContext";
 
 interface Props {
@@ -47,14 +47,14 @@ const RangeDynamic = ({
 
       const clientX = event.clientX;
 
-      if (dragging === "min") {
+      if (dragging === RANGE_ACTION_TYPE.MIN) {
         const newValue = Math.min(Math.max(clientX - rangeLeft, 0), rangeWidth);
         setMinValue(
           Math.min(Math.round((newValue / rangeWidth) * 100), maxValue)
         );
       }
 
-      if (dragging === "max") {
+      if (dragging === RANGE_ACTION_TYPE.MAX) {
         const newValue = Math.min(Math.max(clientX - rangeLeft, 0), rangeWidth);
         setMaxValue(
           Math.max(Math.round((newValue / rangeWidth) * 100), minValue)
@@ -82,21 +82,29 @@ const RangeDynamic = ({
       <div
         data-testid="min-bullet"
         className={`${styles["bullet"]} ${
-          dragging === "min" ? styles["dragging"] : ""
+          dragging === RANGE_ACTION_TYPE.MIN ? styles["dragging"] : ""
         } ${styles["min-bullet"]}`}
         style={{ left: `${minValue}%`, transform: "translate(-50%, -50%)" }}
         onMouseDown={event =>
-          handleBulletMouseDown({ event, type: "min", setDragging })
+          handleBulletMouseDown({
+            event,
+            type: RANGE_ACTION_TYPE.MIN,
+            setDragging,
+          })
         }
       />
       <div
         data-testid="max-bullet"
         className={`${styles["bullet"]} ${
-          dragging === "max" ? styles["dragging"] : ""
+          dragging === RANGE_ACTION_TYPE.MAX ? styles["dragging"] : ""
         } ${styles["max-bullet"]} `}
         style={{ left: `${maxValue}%`, transform: "translate(-50%, -50%)" }}
         onMouseDown={event =>
-          handleBulletMouseDown({ event, type: "max", setDragging })
+          handleBulletMouseDown({
+            event,
+            type: RANGE_ACTION_TYPE.MAX,
+            setDragging,
+          })
         }
       />
     </div>

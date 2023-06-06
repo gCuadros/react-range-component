@@ -3,7 +3,7 @@ import { ChangeEvent } from "react";
 import styles from "components/Range/Range.module.scss";
 import { isNumericString } from "utils/isNumericString";
 
-import { RangeEventAction } from "..";
+import { RANGE_ACTION_TYPE, RangeEventAction } from "..";
 import { useRangeContext } from "../Context/useRangeContext";
 
 interface Props {
@@ -50,12 +50,12 @@ const InputRangeValue = ({
   return (
     <span
       className={`${styles["input-wrapper"]} ${
-        type === "min"
+        type === RANGE_ACTION_TYPE.MIN
           ? styles["input-wrapper--left"]
           : styles["input-wrapper--right"]
       } `}
     >
-      {type === "min" && (
+      {type === RANGE_ACTION_TYPE.MIN && (
         <input
           id="minValue"
           type="number"
@@ -70,7 +70,7 @@ const InputRangeValue = ({
           }`}
         />
       )}
-      {type === "max" && (
+      {type === RANGE_ACTION_TYPE.MAX && (
         <input
           id="maxValue"
           type="number"
